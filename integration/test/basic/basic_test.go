@@ -44,7 +44,7 @@ func checkReadyDeployment(name string, ctx context.Context) error {
 	l.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("waiting for deployment %s to be ready", name))
 
 	o := func() error {
-		selector := fmt.Sprintf("%s=%s", "app.kubernetes.io/name", name)
+		selector := fmt.Sprintf("%s=%s", "app", name)
 		lo := metav1.ListOptions{
 			LabelSelector: selector,
 		}
@@ -83,7 +83,7 @@ func checkReadyDaemonset(dsName string, ctx context.Context) error {
 	l.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("waiting for daemonset %s to be ready", dsName))
 
 	o := func() error {
-		selector := fmt.Sprintf("%s=%s", "app.kubernetes.io/name", dsName)
+		selector := fmt.Sprintf("%s=%s", "app", dsName)
 		lo := metav1.ListOptions{
 			LabelSelector: selector,
 		}

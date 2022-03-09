@@ -3,7 +3,8 @@ kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ .Values.rbac.name }}-external-provisioner-role
-{{ include "azuredisk.labels" . | indent 2 }}
+  labels:
+{{ include "azuredisk.labels" . | indent 4 }}
 rules:
   - apiGroups: [""]
     resources: ["persistentvolumes"]
@@ -39,7 +40,8 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ .Values.rbac.name }}-csi-provisioner-binding
-{{ include "azuredisk.labels" . | indent 2 }}
+  labels:
+{{ include "azuredisk.labels" . | indent 4 }}
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.serviceAccount.controller }}
@@ -55,7 +57,8 @@ kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ .Values.rbac.name }}-external-attacher-role
-{{ include "azuredisk.labels" . | indent 2 }}
+  labels:
+{{ include "azuredisk.labels" . | indent 4 }}
 rules:
   - apiGroups: [""]
     resources: ["persistentvolumes"]
@@ -81,7 +84,8 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ .Values.rbac.name }}-csi-attacher-binding
-{{ include "azuredisk.labels" . | indent 2 }}
+  labels:
+{{ include "azuredisk.labels" . | indent 4 }}
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.serviceAccount.controller }}
@@ -97,7 +101,8 @@ kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ .Values.rbac.name }}-external-snapshotter-role
-{{ include "azuredisk.labels" . | indent 2 }}
+  labels:
+{{ include "azuredisk.labels" . | indent 4 }}
 rules:
   - apiGroups: [""]
     resources: ["events"]
@@ -123,7 +128,8 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ .Values.rbac.name }}-csi-snapshotter-binding
-{{ include "azuredisk.labels" . | indent 2 }}
+  labels:
+{{ include "azuredisk.labels" . | indent 4 }}
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.serviceAccount.controller }}
@@ -138,7 +144,8 @@ kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ .Values.rbac.name }}-external-resizer-role
-{{ include "azuredisk.labels" . | indent 2 }}
+  labels:
+{{ include "azuredisk.labels" . | indent 4 }}
 rules:
   - apiGroups: [""]
     resources: ["persistentvolumes"]
@@ -163,7 +170,8 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ .Values.rbac.name }}-csi-resizer-role
-{{ include "azuredisk.labels" . | indent 2 }}
+  labels:
+{{ include "azuredisk.labels" . | indent 4 }}
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.serviceAccount.controller }}
