@@ -1,6 +1,6 @@
 module github.com/giantswarm/azuredisk-csi-driver-app
 
-go 1.17
+go 1.16
 
 require (
 	github.com/giantswarm/apptest v1.2.0
