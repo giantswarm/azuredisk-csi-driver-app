@@ -129,10 +129,6 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: spec.nodeName
-            {{- if eq .Values.cloud "AzureStackCloud" }}
-            - name: AZURE_ENVIRONMENT_FILEPATH
-              value: /etc/kubernetes/azurestackcloud.json
-            {{- end }}
           imagePullPolicy: {{ .Values.image.azuredisk.pullPolicy }}
           securityContext:
             privileged: true
@@ -150,19 +146,9 @@ spec:
               name: sys-devices-dir
             - mountPath: /sys/class/
               name: sys-class
-            {{- if eq .Values.cloud "AzureStackCloud" }}
             - name: ssl
               mountPath: /etc/ssl/certs
               readOnly: true
-            {{- end }}
-            {{- if eq .Values.linux.distro "fedora" }}
-            - name: ssl
-              mountPath: /etc/ssl/certs
-              readOnly: true
-            - name: ssl-pki
-              mountPath: /etc/pki/ca-trust/extracted
-              readOnly: true
-            {{- end }}
           resources: {{- toYaml .Values.linux.resources.azuredisk | nindent 12 }}
       volumes:
         - hostPath:
@@ -193,17 +179,8 @@ spec:
             path: /sys/class/
             type: Directory
           name: sys-class
-        {{- if eq .Values.cloud "AzureStackCloud" }}
         - name: ssl
           hostPath:
             path: /etc/ssl/certs
-        {{- end }}
-        {{- if eq .Values.linux.distro "fedora" }}
-        - name: ssl
-          hostPath:
-            path: /etc/ssl/certs
-        - name: ssl-pki
-          hostPath:
-            path: /etc/pki/ca-trust/extracted
-        {{- end }}
+
 {{- end }}
