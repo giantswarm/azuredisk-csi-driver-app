@@ -12,13 +12,12 @@ import (
 	"github.com/giantswarm/apptest"
 	"github.com/giantswarm/micrologger"
 
-	"github.com/giantswarm/azuredisk-csi-app/integration/env"
-	"github.com/giantswarm/azuredisk-csi-app/integration/templates"
+	"github.com/giantswarm/azuredisk-csi-driver-app/integration/env"
+	"github.com/giantswarm/azuredisk-csi-driver-app/integration/templates"
 )
 
 const (
-	app           = "azuredisk-csi-test"
-	appName       = "azuredisk-csi-app"
+	appName       = "azuredisk-csi-driver-app"
 	testNamespace = "kube-system"
 )
 

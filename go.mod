@@ -1,4 +1,4 @@
-module github.com/giantswarm/azuredisk-csi-app
+module github.com/giantswarm/azuredisk-csi-driver-app
 
 go 1.17
 
