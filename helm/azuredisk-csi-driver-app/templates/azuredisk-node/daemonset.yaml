@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.linux.dsName }}
-    {{ include "azuredisk.labels" . | indent 4 }}
+{{ include "azuredisk.labels" . | indent 4 }}
 spec:
   updateStrategy:
     rollingUpdate:

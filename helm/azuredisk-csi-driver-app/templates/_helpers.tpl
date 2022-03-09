@@ -11,11 +11,11 @@
 
 {{/* labels for helm resources */}}
 {{- define "azuredisk.labels" -}}
-  app.kubernetes.io/instance: "{{ .Release.Name }}"
-  app.kubernetes.io/managed-by: "{{ .Release.Service }}"
-  app.kubernetes.io/name: "{{ template "azuredisk.name" . }}"
-  app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
-  helm.sh/chart: {{ include "chart" . | quote }}
+app.kubernetes.io/instance: "{{ .Release.Name }}"
+app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+app.kubernetes.io/name: "{{ template "azuredisk.name" . }}"
+app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
+helm.sh/chart: {{ include "chart" . | quote }}
 {{- end -}}
 
 {{/* pull secrets for containers */}}
