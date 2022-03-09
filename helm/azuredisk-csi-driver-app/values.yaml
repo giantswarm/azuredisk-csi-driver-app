@@ -33,10 +33,10 @@ image:
     pullPolicy: IfNotPresent
 
 serviceAccount:
-  create: true # When true, service accounts will be created for you. Set to false if you want to use your own.
-  controller: csi-azuredisk-controller-sa # Name of Service Account to be created or used
-  node: csi-azuredisk-node-sa # Name of Service Account to be created or used
-  snapshotController: csi-snapshot-controller-sa # Name of Service Account to be created or used
+  create: true
+  controller: csi-azuredisk-controller-sa
+  node: csi-azuredisk-node-sa
+  snapshotController: csi-snapshot-controller-sa
 
 rbac:
   create: true
@@ -63,7 +63,7 @@ controller:
     - key: "node-role.kubernetes.io/controlplane"
       operator: "Exists"
       effect: "NoSchedule"
-  hostNetwork: true # this setting could be disabled if controller does not depend on MSI setting
+  hostNetwork: true
   podLabels: {}
   resources:
     csiProvisioner:
@@ -149,13 +149,13 @@ driver:
 
 linux:
   enabled: true
-  dsName: csi-azuredisk-node # daemonset name
+  dsName: csi-azuredisk-node
   kubelet: /var/lib/kubelet
   distro: debian # available values: debian, fedora
   enablePerfOptimization: true
   tolerations:
     - operator: "Exists"
-  hostNetwork: true # this setting could be disabled if perfProfile is `none`
+  hostNetwork: true
   podLabels: {}
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
