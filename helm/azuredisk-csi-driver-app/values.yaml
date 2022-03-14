@@ -6,7 +6,7 @@ name: azuredisk-csi
 serviceType: managed
 
 image:
-  baseRepo: quay.io/giantswarm
+  baseRepo: quay.io/giantswarm/
   azuredisk:
     repository: azuredisk-csi
     tag: v1.12.0
