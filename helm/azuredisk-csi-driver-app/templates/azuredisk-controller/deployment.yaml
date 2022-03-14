@@ -62,11 +62,7 @@ spec:
               name: socket-dir
           resources: {{- toYaml .Values.controller.resources.csiProvisioner | nindent 12 }}
         - name: csi-attacher
-{{- if hasPrefix "/" .Values.image.csiAttacher.repository }}
           image: "{{ .Values.image.baseRepo }}{{ .Values.image.csiAttacher.repository }}:{{ .Values.image.csiAttacher.tag }}"
-{{- else }}
-          image: "{{ .Values.image.csiAttacher.repository }}:{{ .Values.image.csiAttacher.tag }}"
-{{- end }}
           args:
             - "-v=2"
             - "-csi-address=$(ADDRESS)"
@@ -81,11 +77,7 @@ spec:
             name: socket-dir
           resources: {{- toYaml .Values.controller.resources.csiAttacher | nindent 12 }}
         - name: csi-snapshotter
-{{- if hasPrefix "/" .Values.snapshot.image.csiSnapshotter.repository }}
           image: "{{ .Values.image.baseRepo }}{{ .Values.snapshot.image.csiSnapshotter.repository }}:{{ .Values.snapshot.image.csiSnapshotter.tag }}"
-{{- else }}
-          image: "{{ .Values.snapshot.image.csiSnapshotter.repository }}:{{ .Values.snapshot.image.csiSnapshotter.tag }}"
-{{- end }}
           args:
             - "-csi-address=$(ADDRESS)"
             - "-leader-election"
@@ -98,11 +90,7 @@ spec:
               mountPath: /csi
           resources: {{- toYaml .Values.controller.resources.csiSnapshotter | nindent 12 }}
         - name: csi-resizer
-{{- if hasPrefix "/" .Values.image.csiResizer.repository }}
           image: "{{ .Values.image.baseRepo }}{{ .Values.image.csiResizer.repository }}:{{ .Values.image.csiResizer.tag }}"
-{{- else }}
-          image: "{{ .Values.image.csiResizer.repository }}:{{ .Values.image.csiResizer.tag }}"
-{{- end }}
           args:
             - "-csi-address=$(ADDRESS)"
             - "-v=2"
@@ -118,11 +106,7 @@ spec:
               mountPath: /csi
           resources: {{- toYaml .Values.controller.resources.csiResizer | nindent 12 }}
         - name: liveness-probe
-{{- if hasPrefix "/" .Values.image.livenessProbe.repository }}
           image: "{{ .Values.image.baseRepo }}{{ .Values.image.livenessProbe.repository }}:{{ .Values.image.livenessProbe.tag }}"
-{{- else }}
-          image: "{{ .Values.image.livenessProbe.repository }}:{{ .Values.image.livenessProbe.tag }}"
-{{- end }}
           args:
             - --csi-address=/csi/csi.sock
             - --probe-timeout=3s
@@ -133,11 +117,7 @@ spec:
               mountPath: /csi
           resources: {{- toYaml .Values.controller.resources.livenessProbe | nindent 12 }}
         - name: azuredisk
-{{- if hasPrefix "/" .Values.image.azuredisk.repository }}
           image: "{{ .Values.image.baseRepo }}{{ .Values.image.azuredisk.repository }}:{{ .Values.image.azuredisk.tag }}"
-{{- else }}
-          image: "{{ .Values.image.azuredisk.repository }}:{{ .Values.image.azuredisk.tag }}"
-{{- end }}
           args:
             - "--v={{ .Values.controller.logLevel }}"
             - "--endpoint=$(CSI_ENDPOINT)"
