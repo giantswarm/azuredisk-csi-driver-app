@@ -43,11 +43,7 @@ spec:
       {{- include "azuredisk.pullSecrets" . | indent 6 }}
       containers:
         - name: csi-provisioner
-{{- if hasPrefix "/" .Values.image.csiProvisioner.repository }}
           image: "{{ .Values.image.baseRepo }}{{ .Values.image.csiProvisioner.repository }}:{{ .Values.image.csiProvisioner.tag }}"
-{{- else }}
-          image: "{{ .Values.image.csiProvisioner.repository }}:{{ .Values.image.csiProvisioner.tag }}"
-{{- end }}
           args:
             - "--feature-gates=Topology=true"
             - "--csi-address=$(ADDRESS)"

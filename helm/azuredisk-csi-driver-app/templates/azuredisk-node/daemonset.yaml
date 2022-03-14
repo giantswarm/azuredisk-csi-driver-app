@@ -47,11 +47,7 @@ spec:
           volumeMounts:
             - mountPath: /csi
               name: socket-dir
-{{- if hasPrefix "/" .Values.image.livenessProbe.repository }}
           image: "{{ .Values.image.baseRepo }}{{ .Values.image.livenessProbe.repository }}:{{ .Values.image.livenessProbe.tag }}"
-{{- else }}
-          image: "{{ .Values.image.livenessProbe.repository }}:{{ .Values.image.livenessProbe.tag }}"
-{{- end }}
           args:
             - --csi-address=/csi/csi.sock
             - --probe-timeout=3s
