@@ -6,6 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.linux.dsName }}
+    app.kubernetes.io/component: "azurediskNode"
 {{ include "azuredisk.labels" . | indent 4 }}
 spec:
   updateStrategy:

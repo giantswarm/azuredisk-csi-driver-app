@@ -6,6 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.snapshot.snapshotController.name }}
+    app.kubernetes.io/component: "snapshotController"
 {{ include "azuredisk.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.snapshot.snapshotController.replicas }}

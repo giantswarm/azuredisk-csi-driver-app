@@ -5,6 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.controller.name }}
+    app.kubernetes.io/component: "azurediskController"
 {{ include "azuredisk.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.controller.replicas }}
