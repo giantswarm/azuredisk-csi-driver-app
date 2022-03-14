@@ -17,8 +17,10 @@ spec:
   hostIPC: false
   hostPID: false
   hostPorts:
-  - {{ .Values.controller.livenessProbe.healthPort }}
-  - {{ .Values.controller.metricsPort }}
+  - min: {{ .Values.controller.livenessProbe.healthPort }}
+    max: {{ .Values.controller.livenessProbe.healthPort }}
+  - min: {{ .Values.controller.metricsPort }}
+    max: {{ .Values.controller.metricsPort }}
   runAsUser:
     rule: 'RunAsAny'
   seLinux:
