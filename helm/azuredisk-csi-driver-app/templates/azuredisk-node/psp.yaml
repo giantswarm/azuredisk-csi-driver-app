@@ -6,11 +6,12 @@ metadata:
   labels:
 {{ include "azuredisk.labels" . | indent 4 }}
 spec:
-  privileged: false
-  allowPrivilegeEscalation: false
+  privileged: true
+  allowPrivilegeEscalation: true
   allowedCapabilities: []
   volumes:
     - 'hostPath'
+    - 'projected'
   hostNetwork: {{ .Values.linux.hostNetwork }}
   hostIPC: false
   hostPID: false
