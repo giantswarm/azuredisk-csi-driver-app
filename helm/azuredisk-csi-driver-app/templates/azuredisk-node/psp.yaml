@@ -1,0 +1,34 @@
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: {{ .Values.name }}-node
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "azuredisk.labels" . | indent 4 }}
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  allowedCapabilities: []
+  volumes:
+    - 'hostPath'
+  hostNetwork: {{ .Values.linux.hostNetwork }}
+  hostIPC: false
+  hostPID: false
+  hostPorts:
+  - min: {{ .Values.node.livenessProbe.healthPort }}
+    max: {{ .Values.node.livenessProbe.healthPort }}
+  runAsUser:
+    rule: 'RunAsAny'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1
+        max: 65535
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1
+        max: 65535
+  readOnlyRootFilesystem: false
