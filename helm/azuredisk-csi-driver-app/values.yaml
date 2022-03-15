@@ -9,7 +9,7 @@ image:
   baseRepo: quay.io/giantswarm/
   azuredisk:
     repository: azuredisk-csi
-    tag: v1.12.0
+    tag: v1.13.0
     pullPolicy: IfNotPresent
   csiProvisioner:
     repository: csi-provisioner
