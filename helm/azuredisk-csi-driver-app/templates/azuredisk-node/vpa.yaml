@@ -1,0 +1,31 @@
+{{ if .Capabilities.APIVersions.Has "autoscaling.k8s.io/v1" }}
+{{ if .Values.linux.verticalPodAutoscaler.enabled }}
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ .Values.linux.dsName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.linux.dsName }}
+    app.kubernetes.io/component: "azurediskNode"
+{{ include "azuredisk.labels" . | indent 4 }}
+spec:
+  resourcePolicy:
+    containerPolicies:
+    - containerName: liveness-probe
+      controlledValues: RequestsAndLimits
+      mode: Auto
+    - containerName: node-driver-registrar
+      controlledValues: RequestsAndLimits
+      mode: Auto
+    - containerName: azuredisk
+      controlledValues: RequestsAndLimits
+      mode: Auto
+  targetRef:
+    apiVersion: apps/v1
+    kind: DaemonSet
+    name:  {{ .Values.linux.dsName }}
+  updatePolicy:
+    updateMode: Auto
+{{ end }}
+{{ end }}

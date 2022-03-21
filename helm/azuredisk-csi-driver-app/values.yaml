@@ -65,6 +65,8 @@ controller:
       effect: "NoSchedule"
   hostNetwork: true
   podLabels: {}
+  verticalPodAutoscaler:
+    enabled: true
   resources:
     csiProvisioner:
       limits:
@@ -125,6 +127,8 @@ snapshot:
       repository: snapshot-controller
       tag: v5.0.1
       pullPolicy: IfNotPresent
+  verticalPodAutoscaler:
+    enabled: true
   snapshotController:
     name: csi-snapshot-controller
     replicas: 2
@@ -164,6 +168,8 @@ linux:
               operator: NotIn
               values:
                 - virtual-kubelet
+  verticalPodAutoscaler:
+    enabled: true
   resources:
     livenessProbe:
       limits:
