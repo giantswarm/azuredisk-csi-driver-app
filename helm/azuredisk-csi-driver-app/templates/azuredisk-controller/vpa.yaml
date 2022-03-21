@@ -1,0 +1,40 @@
+{{ if .Capabilities.APIVersions.Has "autoscaling.k8s.io/v1" }}
+{{ if .Values.controller.verticalPodAutoscaler.enabled }}
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ .Values.controller.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.controller.name }}
+    app.kubernetes.io/component: "azurediskController"
+{{ include "azuredisk.labels" . | indent 4 }}
+spec:
+  resourcePolicy:
+    containerPolicies:
+    - containerName: csi-provisioner
+      controlledValues: RequestsAndLimits
+      mode: Auto
+    - containerName: csi-attacher
+      controlledValues: RequestsAndLimits
+      mode: Auto
+    - containerName: csi-snapshotter
+      controlledValues: RequestsAndLimits
+      mode: Auto
+    - containerName: csi-resizer
+      controlledValues: RequestsAndLimits
+      mode: Auto
+    - containerName: liveness-probe
+      controlledValues: RequestsAndLimits
+      mode: Auto
+    - containerName: azuredisk
+      controlledValues: RequestsAndLimits
+      mode: Auto
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name:  {{ .Values.controller.name }}
+  updatePolicy:
+    updateMode: Auto
+{{ end }}
+{{ end }}
