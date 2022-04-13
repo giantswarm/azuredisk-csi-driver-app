@@ -13,7 +13,7 @@ image:
     pullPolicy: IfNotPresent
   csiProvisioner:
     repository: csi-provisioner
-    tag: v3.4.0
+    tag: v3.1.0
     pullPolicy: IfNotPresent
   csiAttacher:
     repository: csi-attacher
