@@ -7,6 +7,13 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Added
+
+- Bumped `azuredisk-csi` to upstream version 1.16.0.
+- Bumped `csi-provisioner` to upstream version 3.4.0.
+- Bumped `livenessprobe` to upstream version 2.6.0.
+- Bumped `csi-node-driver-registrar` to upstream version 2.5.0.
+
 ## [1.13.0-gs2] - 2022-03-21
 
 ### Added
