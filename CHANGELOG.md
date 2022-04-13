@@ -7,6 +7,10 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Changed
+
+- Reverted `csi-provisioner` to upstream version 3.1.0.
+
 ## [1.16.0-gs1] - 2022-04-13
 
 ### Added
