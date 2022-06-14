@@ -20,10 +20,5 @@ helm.sh/chart: {{ include "chart" . | quote }}
 
 {{/* pull secrets for containers */}}
 {{- define "azuredisk.pullSecrets" -}}
-{{- if .Values.imagePullSecrets }}
-imagePullSecrets:
-{{- range .Values.imagePullSecrets }}
-  - name: {{ . }}
-{{- end }}
 {{- end }}
 {{- end -}}
