@@ -21,10 +21,6 @@ spec:
 {{ toYaml . | indent 8 }}
 {{- end }}
     spec:
-      {{- if .Values.imagePullSecrets }}
-      imagePullSecrets:
-{{ toYaml .Values.imagePullSecrets | indent 8 }}
-      {{- end }}
       hostNetwork: {{ .Values.controller.hostNetwork }}
       serviceAccountName: {{ .Values.serviceAccount.controller }}
       nodeSelector:
@@ -41,7 +37,6 @@ spec:
       affinity:
 {{ toYaml . | indent 8 }}
 {{- end }}
-      {{- include "azuredisk.pullSecrets" . | indent 6 }}
       containers:
         - name: csi-provisioner
           image: "{{ .Values.image.baseRepo }}{{ .Values.image.csiProvisioner.repository }}:{{ .Values.image.csiProvisioner.tag }}"

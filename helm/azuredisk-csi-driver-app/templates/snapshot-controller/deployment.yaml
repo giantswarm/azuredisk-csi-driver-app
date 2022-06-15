@@ -34,7 +34,6 @@ spec:
       affinity:
 {{ toYaml . | indent 8 }}
 {{- end }}
-      {{- include "azuredisk.pullSecrets" . | indent 6 }}
       containers:
         - name: {{ .Values.snapshot.snapshotController.name }}
           image: "{{ .Values.image.baseRepo }}{{ .Values.snapshot.image.csiSnapshotController.repository }}:{{ .Values.snapshot.image.csiSnapshotController.tag }}"
