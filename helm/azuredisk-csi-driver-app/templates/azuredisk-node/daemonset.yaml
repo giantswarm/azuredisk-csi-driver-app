@@ -90,6 +90,8 @@ spec:
             - "--custom-user-agent={{ .Values.driver.customUserAgent }}"
             - "--user-agent-suffix={{ .Values.driver.userAgentSuffix }}"
             - "--allow-empty-cloud-config={{ .Values.node.allowEmptyCloudConfig }}"
+            - "--support-zone=true"
+            - "--get-node-info-from-labels=false"
           ports:
             - containerPort: {{ .Values.node.livenessProbe.healthPort }}
               name: healthz
