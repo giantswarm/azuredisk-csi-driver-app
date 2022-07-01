@@ -7,6 +7,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+## [1.19.0-gs1] - 2022-07-01
+
 ### Changed
 
 - Bumped `azuredisk-csi` to upstream version 1.19.0.
@@ -45,7 +47,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 - Initial release with upstream version 1.13.0.
 
-[Unreleased]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.16.0-gs2...HEAD
+[Unreleased]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.19.0-gs1...HEAD
+[1.19.0-gs1]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.16.0-gs2...v1.19.0-gs1
 [1.16.0-gs2]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.16.0-gs1...v1.16.0-gs2
 [1.16.0-gs1]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.13.0-gs2...v1.16.0-gs1
 [1.13.0-gs2]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.13.0-gs1...v1.13.0-gs2
