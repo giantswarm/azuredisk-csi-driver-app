@@ -34,13 +34,13 @@ spec:
       affinity:
 {{ toYaml . | indent 8 }}
 {{- end }}
-      {{- include "azuredisk.pullSecrets" . | indent 6 }}
       containers:
         - name: {{ .Values.snapshot.snapshotController.name }}
           image: "{{ .Values.image.baseRepo }}{{ .Values.snapshot.image.csiSnapshotController.repository }}:{{ .Values.snapshot.image.csiSnapshotController.tag }}"
           args:
             - "--v=2"
             - "--leader-election=true"
+            - "--leader-election-namespace={{ .Release.Namespace }}"
           resources: {{- toYaml .Values.snapshot.snapshotController.resources | nindent 12 }}
           imagePullPolicy: {{ .Values.snapshot.image.csiSnapshotController.pullPolicy }}
 {{- end -}}

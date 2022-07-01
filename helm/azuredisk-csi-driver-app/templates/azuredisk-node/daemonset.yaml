@@ -25,10 +25,6 @@ spec:
 {{ toYaml . | indent 8 }}
 {{- end }}
     spec:
-      {{- if .Values.imagePullSecrets }}
-      imagePullSecrets:
-{{ toYaml .Values.imagePullSecrets | indent 8 }}
-      {{- end }}
       hostNetwork: {{ .Values.linux.hostNetwork }}
       dnsPolicy: Default
       serviceAccountName: {{ .Values.serviceAccount.node }}
@@ -42,7 +38,6 @@ spec:
       tolerations:
 {{ toYaml . | indent 8 }}
 {{- end }}
-      {{- include "azuredisk.pullSecrets" . | indent 6 }}
       containers:
         - name: liveness-probe
           volumeMounts:
@@ -95,6 +90,8 @@ spec:
             - "--custom-user-agent={{ .Values.driver.customUserAgent }}"
             - "--user-agent-suffix={{ .Values.driver.userAgentSuffix }}"
             - "--allow-empty-cloud-config={{ .Values.node.allowEmptyCloudConfig }}"
+            - "--support-zone=true"
+            - "--get-node-info-from-labels=false"
           ports:
             - containerPort: {{ .Values.node.livenessProbe.healthPort }}
               name: healthz

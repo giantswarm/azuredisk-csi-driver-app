@@ -21,10 +21,6 @@ spec:
 {{ toYaml . | indent 8 }}
 {{- end }}
     spec:
-      {{- if .Values.imagePullSecrets }}
-      imagePullSecrets:
-{{ toYaml .Values.imagePullSecrets | indent 8 }}
-      {{- end }}
       hostNetwork: {{ .Values.controller.hostNetwork }}
       serviceAccountName: {{ .Values.serviceAccount.controller }}
       nodeSelector:
@@ -41,7 +37,6 @@ spec:
       affinity:
 {{ toYaml . | indent 8 }}
 {{- end }}
-      {{- include "azuredisk.pullSecrets" . | indent 6 }}
       containers:
         - name: csi-provisioner
           image: "{{ .Values.image.baseRepo }}{{ .Values.image.csiProvisioner.repository }}:{{ .Values.image.csiProvisioner.tag }}"
@@ -51,6 +46,7 @@ spec:
             - "--v=2"
             - "--timeout=15s"
             - "--leader-election"
+            - "--leader-election-namespace={{ .Release.Namespace }}"
             - "--worker-threads={{ .Values.controller.provisionerWorkerThreads }}"
             - "--extra-create-metadata=true"
             - "--strict-topology=true"
@@ -68,6 +64,7 @@ spec:
             - "-csi-address=$(ADDRESS)"
             - "-timeout=600s"
             - "-leader-election"
+            - "--leader-election-namespace={{ .Release.Namespace }}"
             - "-worker-threads={{ .Values.controller.attacherWorkerThreads }}"
           env:
             - name: ADDRESS
@@ -95,9 +92,10 @@ spec:
             - "-csi-address=$(ADDRESS)"
             - "-v=2"
             - "-leader-election"
+            - "--leader-election-namespace={{ .Release.Namespace }}"
             - '-handle-volume-inuse-error=false'
             - '-feature-gates=RecoverVolumeExpansionFailure=true'
-            - "-timeout=120s"
+            - "-timeout=240s"
           env:
             - name: ADDRESS
               value: /csi/csi.sock

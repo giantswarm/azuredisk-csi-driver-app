@@ -9,27 +9,27 @@ image:
   baseRepo: quay.io/giantswarm/
   azuredisk:
     repository: azuredisk-csi
-    tag: v1.16.0
+    tag: v1.19.0
     pullPolicy: IfNotPresent
   csiProvisioner:
     repository: csi-provisioner
-    tag: v3.1.0
+    tag: v3.2.0
     pullPolicy: IfNotPresent
   csiAttacher:
     repository: csi-attacher
-    tag: v3.4.0
+    tag: v3.5.0
     pullPolicy: IfNotPresent
   csiResizer:
     repository: csi-resizer
-    tag: v1.4.0
+    tag: v1.5.0
     pullPolicy: IfNotPresent
   livenessProbe:
     repository: livenessprobe
-    tag: v2.6.0
+    tag: v2.7.0
     pullPolicy: IfNotPresent
   nodeDriverRegistrar:
     repository: csi-node-driver-registrar
-    tag: v2.5.0
+    tag: v2.5.1
     pullPolicy: IfNotPresent
 
 serviceAccount:
@@ -191,12 +191,6 @@ linux:
         memory: 20Mi
 
 cloud: AzurePublicCloud
-
-## Reference to one or more secrets to be used when pulling images
-## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-##
-imagePullSecrets: []
-# - name: "image-pull-secret"
 
 test:
   image:
