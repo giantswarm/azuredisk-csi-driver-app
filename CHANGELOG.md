@@ -7,6 +7,11 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Changed
+
+- Bumped `azuredisk-csi` to upstream version 1.21.0.
+- Bumped `csi-provisioner` to upstream version 3.2.1.
+
 ## [1.19.0-gs1] - 2022-07-01
 
 ### Changed
@@ -15,7 +20,7 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 - Bumped `csi-provisioner` to upstream version 3.2.0.
 - Bumped `csi-attacher` to upstream version 3.5.0.
 - Bumped `csi-resizer` to upstream version 1.5.0.
-- Bumped `livenessprobe` to upstream version 2.5.0.
+- Bumped `livenessprobe` to upstream version 2.7.0.
 - Bumped `csi-node-driver-registrar` to upstream version 2.5.1.
 - Update helm chart templates from upstream.
 - Remove `imagePullSecrets`
