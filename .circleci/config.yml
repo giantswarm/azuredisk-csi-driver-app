@@ -16,3 +16,13 @@ workflows:
             # Trigger the job also on git tag.
             tags:
               only: /^v.*/
+      - architect/push-to-app-catalog:
+          context: architect
+          name: "push-to-default-app-catalog"
+          app_catalog: "default-catalog"
+          app_catalog_test: "default-test-catalog"
+          chart: "azuredisk-csi-driver-app"
+          filters:
+            # Trigger the job also on git tag.
+            tags:
+              only: /^v.*/
