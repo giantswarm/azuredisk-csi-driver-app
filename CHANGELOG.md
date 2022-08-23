@@ -7,6 +7,10 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Changed
+
+- Push app to default catalog.
+
 ## [1.21.0-gs1] - 2022-08-11
 
 ### Changed
