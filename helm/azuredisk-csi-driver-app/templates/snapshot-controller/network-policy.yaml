@@ -1,0 +1,16 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: {{ .Values.snapshot.snapshotController.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.snapshot.snapshotController.name }}
+    app.kubernetes.io/component: "snapshotController"
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ .Values.snapshot.snapshotController.name }}
+  egress:
+  - {}
+  policyTypes:
+  - Egress
