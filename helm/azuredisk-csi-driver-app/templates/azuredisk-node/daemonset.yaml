@@ -131,9 +131,6 @@ spec:
               name: sys-devices-dir
             - mountPath: /sys/class/
               name: sys-class
-            - name: ssl
-              mountPath: /etc/ssl/certs
-              readOnly: true
           resources: {{- toYaml .Values.linux.resources.azuredisk | nindent 12 }}
       volumes:
         - hostPath:
@@ -164,8 +161,5 @@ spec:
             path: /sys/class/
             type: Directory
           name: sys-class
-        - name: ssl
-          hostPath:
-            path: /etc/ssl/certs
 
 {{- end }}

@@ -7,7 +7,15 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Fixed
+
+- Remove hostPath mount of `/etc/ssl/certs`.
+
 ## [1.21.0-gs3] - 2022-08-23
+
+### Added
+
+- Add NetworkPolicy to make app compatible with workload clusters.
 
 ## [1.21.0-gs2] - 2022-08-23
 
