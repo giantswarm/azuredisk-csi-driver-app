@@ -26,7 +26,7 @@ spec:
       nodeSelector:
         kubernetes.io/os: linux
         {{- if .Values.controller.runOnMaster}}
-        kubernetes.io/role: master
+        node-role.kubernetes.io/control-plane: ""
         {{- end}}
       priorityClassName: system-cluster-critical
 {{- with .Values.controller.tolerations }}
@@ -50,6 +50,8 @@ spec:
             - "--worker-threads={{ .Values.controller.provisionerWorkerThreads }}"
             - "--extra-create-metadata=true"
             - "--strict-topology=true"
+            - "--kube-api-qps=50"
+            - "--kube-api-burst=100"
           env:
             - name: ADDRESS
               value: /csi/csi.sock
@@ -62,10 +64,12 @@ spec:
           args:
             - "-v=2"
             - "-csi-address=$(ADDRESS)"
-            - "-timeout=600s"
+            - "-timeout=1200s"
             - "-leader-election"
             - "--leader-election-namespace={{ .Release.Namespace }}"
             - "-worker-threads={{ .Values.controller.attacherWorkerThreads }}"
+            - "-kube-api-qps=50"
+            - "-kube-api-burst=100"
           env:
             - name: ADDRESS
               value: /csi/csi.sock
@@ -147,6 +151,18 @@ spec:
               value: /etc/kubernetes/config/azure.yaml
             - name: CSI_ENDPOINT
               value: unix:///csi/csi.sock
+            {{- if ne .Values.driver.httpsProxy "" }}
+            - name: HTTPS_PROXY
+              value: {{ .Values.driver.httpsProxy }}
+            {{- end }}
+            {{- if ne .Values.driver.httpProxy "" }}
+            - name: HTTP_PROXY
+              value: {{ .Values.driver.httpProxy }}
+            {{- end }}
+            {{- if ne .Values.driver.noProxy "" }}
+            - name: NO_PROXY
+              value: {{ .Values.driver.noProxy }}
+            {{- end }}
           imagePullPolicy: {{ .Values.image.azuredisk.pullPolicy }}
           volumeMounts:
             - mountPath: /csi

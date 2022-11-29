@@ -9,7 +9,7 @@ image:
   baseRepo: quay.io/giantswarm/
   azuredisk:
     repository: azuredisk-csi
-    tag: v1.21.0
+    tag: v1.25.0
     pullPolicy: IfNotPresent
   csiProvisioner:
     repository: csi-provisioner
@@ -53,7 +53,7 @@ controller:
     healthPort: 29602
   runOnMaster: false
   disableAvailabilitySetNodes: true
-  provisionerWorkerThreads: 40
+  provisionerWorkerThreads: 100
   attacherWorkerThreads: 500
   logLevel: 5
   tolerations:
@@ -61,6 +61,9 @@ controller:
       operator: "Exists"
       effect: "NoSchedule"
     - key: "node-role.kubernetes.io/controlplane"
+      operator: "Exists"
+      effect: "NoSchedule"
+    - key: "node-role.kubernetes.io/control-plane"
       operator: "Exists"
       effect: "NoSchedule"
   hostNetwork: true
@@ -150,6 +153,9 @@ driver:
   volumeAttachLimit: -1
   customUserAgent: ""
   userAgentSuffix: "giantswarm"
+  httpsProxy: ""
+  httpProxy: ""
+  noProxy: ""
 
 linux:
   enabled: true
