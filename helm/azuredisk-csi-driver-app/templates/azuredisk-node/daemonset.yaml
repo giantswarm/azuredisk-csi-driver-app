@@ -107,7 +107,7 @@ spec:
             periodSeconds: 30
           env:
             - name: AZURE_CREDENTIAL_FILE
-              value: /etc/kubernetes/config/azure.yaml
+              value: {{ .Values.linux.azure_credential_file }}
             - name: CSI_ENDPOINT
               value: unix:///csi/csi.sock
             {{- if and $proxy.noProxy $proxy.http $proxy.https }}

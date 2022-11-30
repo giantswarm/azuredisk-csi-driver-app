@@ -52,6 +52,8 @@ controller:
   livenessProbe:
     healthPort: 29602
   runOnMaster: false
+  masterNodeSelector:
+    "kubernetes.io/role": master
   disableAvailabilitySetNodes: true
   provisionerWorkerThreads: 100
   attacherWorkerThreads: 500
@@ -157,6 +159,7 @@ driver:
 linux:
   enabled: true
   dsName: csi-azuredisk-node
+  azure_credential_file: /etc/kubernetes/config/azure.yaml
   kubelet: /var/lib/kubelet
   enablePerfOptimization: true
   tolerations:
