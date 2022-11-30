@@ -153,9 +153,6 @@ driver:
   volumeAttachLimit: -1
   customUserAgent: ""
   userAgentSuffix: "giantswarm"
-  httpsProxy: ""
-  httpProxy: ""
-  noProxy: ""
 
 linux:
   enabled: true
@@ -197,6 +194,19 @@ linux:
         memory: 20Mi
 
 cloud: AzurePublicCloud
+
+# set the HTTP_PROXY, HTTPS_PROXY and NO_PROXY variable
+proxy:
+  noProxy:
+  http:
+  https:
+cluster:
+  # is getting overwritten by the top level proxy if set
+  # These values are generated via cluster-apps-operator
+  proxy:
+    noProxy:
+    http:
+    https:
 
 test:
   image:

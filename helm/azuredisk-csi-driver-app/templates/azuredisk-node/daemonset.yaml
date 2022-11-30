@@ -1,4 +1,5 @@
 {{- if .Values.linux.enabled}}
+{{- $proxy := deepCopy .Values.cluster.proxy |  mustMerge .Values.proxy }}
 kind: DaemonSet
 apiVersion: apps/v1
 metadata:
@@ -109,17 +110,19 @@ spec:
               value: /etc/kubernetes/config/azure.yaml
             - name: CSI_ENDPOINT
               value: unix:///csi/csi.sock
-            {{- if ne .Values.driver.httpsProxy "" }}
-            - name: HTTPS_PROXY
-              value: {{ .Values.driver.httpsProxy }}
-            {{- end }}
-            {{- if ne .Values.driver.httpProxy "" }}
-            - name: HTTP_PROXY
-              value: {{ .Values.driver.httpProxy }}
-            {{- end }}
-            {{- if ne .Values.driver.noProxy "" }}
+            {{- if and $proxy.noProxy $proxy.http $proxy.https }}
             - name: NO_PROXY
-              value: {{ .Values.driver.noProxy }}
+              value: {{ $proxy.noProxy }}
+            - name: no_proxy
+              value: {{ $proxy.noProxy }}
+            - name: HTTP_PROXY
+              value: {{ $proxy.http }}
+            - name: http_proxy
+              value: {{ $proxy.http }}
+            - name: HTTPS_PROXY
+              value: {{ $proxy.https }}
+            - name: https_proxy
+              value: {{ $proxy.https }}
             {{- end }}
             - name: KUBE_NODE_NAME
               valueFrom:
