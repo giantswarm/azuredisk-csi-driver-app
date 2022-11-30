@@ -15,6 +15,9 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 - Add support for http/s proxy settings to azuredisk using `cluster-apps-operator` `cluster.proxy` values
 - as per [KEP 2067](https://github.com/kubernetes/enhancements/blob/master/keps/sig-cluster-lifecycle/kubeadm/2067-rename-master-label-taint/README.md#renaming-the-node-rolekubernetesiomaster-node-label) add toleration for `node-role.kubernetes.io/control-plane` label and update nodeSelector
 - add rbac to get nodes for azuredisk-node to match upstream
+- Make some hardcoded fields in the template a value so that we can set them differently in `Vintage` and in `CAPZ`
+  - runOnMaster nodeSelector label
+  - AZURE_CREDENTIAL_FILE location
 
 ## [1.21.0-gs4] - 2022-08-29
 
