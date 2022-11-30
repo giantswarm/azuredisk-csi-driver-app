@@ -12,7 +12,7 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 - Increased qps limits for csi-provisioner and csi-attacher to match upstream
 - Increased WorkerThreads for csi-provisioner to match upstream
 - Increased csi-attacher timeout from 600s to 1200s to match upstream
-- Add support for http/s proxy settings to azuredisk
+- Add support for http/s proxy settings to azuredisk using `cluster-apps-operator` `cluster.proxy` values
 - as per [KEP 2067](https://github.com/kubernetes/enhancements/blob/master/keps/sig-cluster-lifecycle/kubeadm/2067-rename-master-label-taint/README.md#renaming-the-node-rolekubernetesiomaster-node-label) add toleration for `node-role.kubernetes.io/control-plane` label and update nodeSelector
 - add rbac to get nodes for azuredisk-node to match upstream
 
