@@ -1,3 +1,4 @@
+{{- $proxy := deepCopy .Values.cluster.proxy |  mustMerge .Values.proxy }}
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -26,7 +27,9 @@ spec:
       nodeSelector:
         kubernetes.io/os: linux
         {{- if .Values.controller.runOnMaster}}
-        kubernetes.io/role: master
+        {{-  range $key, $value := $.Values.controller.masterNodeSelector }}
+        {{ $key }}: {{ $value }}
+        {{- end}}
         {{- end}}
       priorityClassName: system-cluster-critical
 {{- with .Values.controller.tolerations }}
@@ -50,6 +53,8 @@ spec:
             - "--worker-threads={{ .Values.controller.provisionerWorkerThreads }}"
             - "--extra-create-metadata=true"
             - "--strict-topology=true"
+            - "--kube-api-qps=50"
+            - "--kube-api-burst=100"
           env:
             - name: ADDRESS
               value: /csi/csi.sock
@@ -62,10 +67,12 @@ spec:
           args:
             - "-v=2"
             - "-csi-address=$(ADDRESS)"
-            - "-timeout=600s"
+            - "-timeout=1200s"
             - "-leader-election"
             - "--leader-election-namespace={{ .Release.Namespace }}"
             - "-worker-threads={{ .Values.controller.attacherWorkerThreads }}"
+            - "-kube-api-qps=50"
+            - "-kube-api-burst=100"
           env:
             - name: ADDRESS
               value: /csi/csi.sock
@@ -144,9 +151,23 @@ spec:
             periodSeconds: 30
           env:
             - name: AZURE_CREDENTIAL_FILE
-              value: /etc/kubernetes/config/azure.yaml
+              value: {{ .Values.linux.azure_credential_file }}
             - name: CSI_ENDPOINT
               value: unix:///csi/csi.sock
+            {{- if and $proxy.noProxy $proxy.http $proxy.https }}
+            - name: NO_PROXY
+              value: {{ $proxy.noProxy }}
+            - name: no_proxy
+              value: {{ $proxy.noProxy }}
+            - name: HTTP_PROXY
+              value: {{ $proxy.http }}
+            - name: http_proxy
+              value: {{ $proxy.http }}
+            - name: HTTPS_PROXY
+              value: {{ $proxy.https }}
+            - name: https_proxy
+              value: {{ $proxy.https }}
+            {{- end }}
           imagePullPolicy: {{ .Values.image.azuredisk.pullPolicy }}
           volumeMounts:
             - mountPath: /csi

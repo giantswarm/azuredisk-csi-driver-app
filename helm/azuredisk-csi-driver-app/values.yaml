@@ -9,7 +9,7 @@ image:
   baseRepo: quay.io/giantswarm/
   azuredisk:
     repository: azuredisk-csi
-    tag: v1.21.0
+    tag: v1.25.0
     pullPolicy: IfNotPresent
   csiProvisioner:
     repository: csi-provisioner
@@ -52,8 +52,10 @@ controller:
   livenessProbe:
     healthPort: 29602
   runOnMaster: false
+  masterNodeSelector:
+    "kubernetes.io/role": master
   disableAvailabilitySetNodes: true
-  provisionerWorkerThreads: 40
+  provisionerWorkerThreads: 100
   attacherWorkerThreads: 500
   logLevel: 5
   tolerations:
@@ -61,6 +63,9 @@ controller:
       operator: "Exists"
       effect: "NoSchedule"
     - key: "node-role.kubernetes.io/controlplane"
+      operator: "Exists"
+      effect: "NoSchedule"
+    - key: "node-role.kubernetes.io/control-plane"
       operator: "Exists"
       effect: "NoSchedule"
   hostNetwork: true
@@ -154,6 +159,7 @@ driver:
 linux:
   enabled: true
   dsName: csi-azuredisk-node
+  azure_credential_file: /etc/kubernetes/config/azure.yaml
   kubelet: /var/lib/kubelet
   enablePerfOptimization: true
   tolerations:
@@ -191,6 +197,19 @@ linux:
         memory: 20Mi
 
 cloud: AzurePublicCloud
+
+# set the HTTP_PROXY, HTTPS_PROXY and NO_PROXY variable
+proxy:
+  noProxy:
+  http:
+  https:
+cluster:
+  # is getting overwritten by the top level proxy if set
+  # These values are generated via cluster-apps-operator
+  proxy:
+    noProxy:
+    http:
+    https:
 
 test:
   image:
