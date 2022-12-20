@@ -1,4 +1,5 @@
 {{- if and .Values.provider (eq .Values.provider "capz") -}}
+apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: default
