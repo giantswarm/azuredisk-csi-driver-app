@@ -7,6 +7,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+* Remove VolumeSnapshotClass since we need to first install the CRDs as a hook before we can push this manifest
+
 ## [1.25.1-gs1] - 2022-12-21
 
 * Add StorageClasses for CSI Disk Driver , only enabled for CAPZ Clusters
