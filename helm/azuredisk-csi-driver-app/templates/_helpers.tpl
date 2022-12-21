@@ -17,3 +17,17 @@ app.kubernetes.io/name: "{{ template "azuredisk.name" . }}"
 app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
 helm.sh/chart: {{ include "chart" . | quote }}
 {{- end -}}
+
+{{- define "annotations.CRDInstall" -}}
+"helm.sh/hook": "pre-install,pre-upgrade"
+"helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded,hook-failed"
+{{- end -}}
+
+{{- define "azuredisk.name.crdInstall" -}}
+{{- printf "%s-%s" ( include "azuredisk.name" . ) "crd-install" | replace "+" "_" | trimSuffix "-" -}}
+{{- end -}}
+
+{{/* Create a label which can be used to select any orphaned crd-install hook resources */}}
+{{- define "azuredisk.CRDInstallSelector" -}}
+{{- printf "%s" "crd-install-hook" -}}
+{{- end -}}

@@ -1,0 +1,52 @@
+{{- if .Values.snapshot.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "azuredisk.name.crdInstall" . }}-volumesnapshotclasses
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    # create hook dependencies in the right order
+    "helm.sh/hook-weight": "-5"
+    {{- include "annotations.CRDInstall" . | nindent 4 }}
+  labels:
+    app.kubernetes.io/component: "{{ template "azuredisk.name.crdInstall" . }}"
+    {{- include "azuredisk.labels" . | nindent 4 }}
+    role: "{{ template "azuredisk.CRDInstallSelector" . }}"
+data:
+  volumesnapshotclasses.yaml: |
+{{ tpl ( .Files.Get "files/volumesnapshotclasses.yaml" ) . | indent 4 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "azuredisk.name.crdInstall" . }}-volumesnapshotcontents
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    # create hook dependencies in the right order
+    "helm.sh/hook-weight": "-5"
+    {{- include "annotations.CRDInstall" . | nindent 4 }}
+  labels:
+    app.kubernetes.io/component: "{{ template "azuredisk.name.crdInstall" . }}"
+    {{- include "azuredisk.labels" . | nindent 4 }}
+    role: "{{ template "azuredisk.CRDInstallSelector" . }}"
+data:
+  volumesnapshotcontents.yaml: |
+{{ tpl ( .Files.Get "files/volumesnapshotcontents.yaml" ) . | indent 4 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "azuredisk.name.crdInstall" . }}-volumesnapshots
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    # create hook dependencies in the right order
+    "helm.sh/hook-weight": "-5"
+    {{- include "annotations.CRDInstall" . | nindent 4 }}
+  labels:
+    app.kubernetes.io/component: "{{ template "azuredisk.name.crdInstall" . }}"
+    {{- include "azuredisk.labels" . | nindent 4 }}
+    role: "{{ template "azuredisk.CRDInstallSelector" . }}"
+data:
+  volumesnapshots.yaml: |
+{{ tpl ( .Files.Get "files/volumesnapshots.yaml" ) . | indent 4 }}
+{{- end }}
