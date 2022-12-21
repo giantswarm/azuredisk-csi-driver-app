@@ -7,6 +7,9 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+* Add StorageClasses for CSI Disk Driver , only enabled for CAPZ Clusters
+* Add VolumeSnapshotClass for CSI Disk Driver , only enabled for CAPZ Clusters
+
 ## [1.25.0-gs1] - 2022-12-06
 
 ### Changed

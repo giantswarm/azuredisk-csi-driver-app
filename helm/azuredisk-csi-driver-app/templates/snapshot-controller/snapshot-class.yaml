@@ -1,0 +1,10 @@
+{{- if and .Values.snapshot.enabled .Values.provider (eq .Values.provider "capz") -}}
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: csi-azuredisk
+driver: disk.csi.azure.com
+deletionPolicy: Delete
+parameters:
+  incremental: "true"
+{{- end }}
