@@ -7,6 +7,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+## [1.25.2-gs1] - 2022-12-22
+
 * Remove VolumeSnapshotClass since we need to first install the CRDs as a hook before we can push this manifest
 
 ## [1.25.1-gs1] - 2022-12-21
@@ -97,7 +99,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 - Initial release with upstream version 1.13.0.
 
-[Unreleased]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.25.1-gs1...HEAD
+[Unreleased]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.25.2-gs1...HEAD
+[1.25.2-gs1]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.25.1-gs1...v1.25.2-gs1
 [1.25.1-gs1]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.25.0-gs1...v1.25.1-gs1
 [1.25.0-gs1]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.21.0-gs4...v1.25.0-gs1
 [1.21.0-gs4]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.21.0-gs3...v1.21.0-gs4
