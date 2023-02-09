@@ -9,27 +9,27 @@ image:
   baseRepo: quay.io/giantswarm/
   azuredisk:
     repository: azuredisk-csi
-    tag: v1.25.0
+    tag: v1.26.2
     pullPolicy: IfNotPresent
   csiProvisioner:
     repository: csi-provisioner
-    tag: v3.2.1
+    tag: v3.3.0
     pullPolicy: IfNotPresent
   csiAttacher:
     repository: csi-attacher
-    tag: v3.5.0
+    tag: v4.0.0
     pullPolicy: IfNotPresent
   csiResizer:
     repository: csi-resizer
-    tag: v1.5.0
+    tag: v1.6.0
     pullPolicy: IfNotPresent
   livenessProbe:
     repository: livenessprobe
-    tag: v2.7.0
+    tag: v2.8.0
     pullPolicy: IfNotPresent
   nodeDriverRegistrar:
     repository: csi-node-driver-registrar
-    tag: v2.5.1
+    tag: v2.6.2
     pullPolicy: IfNotPresent
 
 serviceAccount:

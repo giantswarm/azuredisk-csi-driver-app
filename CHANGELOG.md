@@ -7,6 +7,16 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Changed
+- updates to match upstream helm 1.26.2
+  - Bumped `azuredisk-csi` to upstream version 1.26.2
+  - Bumped `csi-provisioner` to upstream version 3.3.0
+  - Bumped `csi-attacher` to upstream version 4.0.0
+  - Bumped `csi-resizer` to upstream version 1.6.0
+  - Bumped `liveness-probe` to upstream version 2.8.0
+  - Bumped `nodeDriverRegistrar` to upstream version 2.6.2
+  - increase csi-provisioner timeout to 30s
+
 ## [1.25.2-gs1] - 2022-12-22
 
 * Remove VolumeSnapshotClass since we need to first install the CRDs as a hook before we can push this manifest
