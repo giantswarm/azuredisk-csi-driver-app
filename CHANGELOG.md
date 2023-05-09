@@ -7,6 +7,10 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Changed
+
+- Upgrade `Chart.yaml` `apiVersion` from `v1` to `v2` , this is required by `HelmRelease` 
+
 ## [1.26.2-gs2] - 2023-05-03
 
 ### Changed
