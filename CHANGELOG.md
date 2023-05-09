@@ -7,6 +7,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+## [1.26.2-gs3] - 2023-05-09
+
 ### Changed
 
 - Upgrade `Chart.yaml` `apiVersion` from `v1` to `v2` , this is required by `HelmRelease` 
@@ -121,7 +123,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 - Initial release with upstream version 1.13.0.
 
-[Unreleased]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.26.2-gs2...HEAD
+[Unreleased]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.26.2-gs3...HEAD
+[1.26.2-gs3]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.26.2-gs2...v1.26.2-gs3
 [1.26.2-gs2]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.26.2-gs1...v1.26.2-gs2
 [1.26.2-gs1]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.25.2-gs1...v1.26.2-gs1
 [1.25.2-gs1]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.25.1-gs1...v1.25.2-gs1
