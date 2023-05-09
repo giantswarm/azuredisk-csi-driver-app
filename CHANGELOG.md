@@ -7,6 +7,11 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Changed
+
+- Remove `capabitlities.apiversion.has` check for VPA to avoid race condition between this app being installed and the api-version providing app being installed
+  - With this change the installation of the chart will fail until the `api-version` is available
+
 ## [1.26.2-gs3] - 2023-05-09
 
 ### Changed
