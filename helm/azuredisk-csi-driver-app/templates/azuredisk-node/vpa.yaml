@@ -1,4 +1,3 @@
-{{ if .Capabilities.APIVersions.Has "autoscaling.k8s.io/v1" }}
 {{ if .Values.linux.verticalPodAutoscaler.enabled }}
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
@@ -27,5 +26,4 @@ spec:
     name:  {{ .Values.linux.dsName }}
   updatePolicy:
     updateMode: Auto
-{{ end }}
 {{ end }}

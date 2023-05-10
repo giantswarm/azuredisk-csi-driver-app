@@ -1,4 +1,3 @@
-{{ if .Capabilities.APIVersions.Has "autoscaling.k8s.io/v1" }}
 {{ if .Values.snapshot.verticalPodAutoscaler.enabled }}
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
@@ -21,5 +20,4 @@ spec:
     name:  {{ .Values.snapshot.snapshotController.name }}
   updatePolicy:
     updateMode: Auto
-{{ end }}
 {{ end }}
