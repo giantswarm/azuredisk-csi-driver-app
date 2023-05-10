@@ -7,6 +7,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+## [1.26.2-gs4] - 2023-05-10
+
 ### Changed
 
 - Remove `capabitlities.apiversion.has` check for VPA to avoid race condition between this app being installed and the api-version providing app being installed
@@ -129,7 +131,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 - Initial release with upstream version 1.13.0.
 
-[Unreleased]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.26.2-gs3...HEAD
+[Unreleased]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.26.2-gs4...HEAD
+[1.26.2-gs4]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.26.2-gs3...v1.26.2-gs4
 [1.26.2-gs3]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.26.2-gs2...v1.26.2-gs3
 [1.26.2-gs2]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.26.2-gs1...v1.26.2-gs2
 [1.26.2-gs1]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.25.2-gs1...v1.26.2-gs1
