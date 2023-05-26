@@ -7,6 +7,11 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Fixed
+
+- Added required values for pss policies.
+- Added pss exceptions for volumes.
+
 ## [1.26.2-gs4] - 2023-05-10
 
 ### Changed

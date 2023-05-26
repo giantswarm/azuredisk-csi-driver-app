@@ -131,6 +131,8 @@ spec:
                   fieldPath: spec.nodeName
           imagePullPolicy: {{ .Values.image.azuredisk.pullPolicy }}
           securityContext:
+            seccompProfile:
+              type: RuntimeDefault
             privileged: true
           volumeMounts:
             - mountPath: /csi
