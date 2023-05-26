@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v2alpha1
 kind: PolicyException
 metadata:
-  name: {{ .Values.linux.dsName }}
+  name: {{ .Values.linux.dsName }}-exceptions
   namespace: {{ .Release.Namespace }}
 spec:
   exceptions:
