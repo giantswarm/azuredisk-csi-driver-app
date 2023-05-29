@@ -46,4 +46,4 @@ spec:
         namespaces:
         - {{ .Release.Namespace }}
         names:
-        - {{ .Values.linux.dsName }}
+        - {{ .Values.linux.dsName }}*
