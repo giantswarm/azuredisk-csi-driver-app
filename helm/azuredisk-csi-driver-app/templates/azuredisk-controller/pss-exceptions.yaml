@@ -26,7 +26,7 @@ spec:
     any:
     - resources:
         kinds:
-        - DaemonSet
+        - Deployment
         - Pod
         namespaces:
         - {{ .Release.Namespace }}
