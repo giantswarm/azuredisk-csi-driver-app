@@ -215,3 +215,22 @@ test:
   image:
     name: giantswarm/alpine-testing
     tag: 0.1.1
+
+podSecurityContext:
+  default:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+
+# Add seccomp to container security context
+securityContext:
+  default:
+    allowPrivilegeEscalation: false
+    seccompProfile:
+      type: RuntimeDefault
+    capabilities:
+      drop:
+      - ALL
+  node:
+    seccompProfile:
+      type: RuntimeDefault
