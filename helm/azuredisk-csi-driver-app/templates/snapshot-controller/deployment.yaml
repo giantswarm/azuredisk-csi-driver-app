@@ -24,7 +24,7 @@ spec:
     spec:
       serviceAccountName: {{ .Values.serviceAccount.snapshotController }}
       securityContext:
-        {{- with .Values.podSecurityContext.default }}
+        {{- with .Values.podSecurityContext }}
           {{- . | toYaml | nindent 8 }}
         {{- end }}
       nodeSelector:

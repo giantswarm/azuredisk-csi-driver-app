@@ -217,10 +217,8 @@ test:
     tag: 0.1.1
 
 podSecurityContext:
-  default:
-    runAsNonRoot: true
-    seccompProfile:
-      type: RuntimeDefault
+  seccompProfile:
+    type: RuntimeDefault
 
 # Add seccomp to container security context
 securityContext:
