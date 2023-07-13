@@ -24,6 +24,10 @@ spec:
     spec:
       hostNetwork: {{ .Values.controller.hostNetwork }}
       serviceAccountName: {{ .Values.serviceAccount.controller }}
+      securityContext:
+        {{- with .Values.podSecurityContext }}
+          {{- . | toYaml | nindent 8 }}
+        {{- end }}
       nodeSelector:
         kubernetes.io/os: linux
         {{- if .Values.controller.runOnMaster}}
@@ -62,6 +66,10 @@ spec:
             - mountPath: /csi
               name: socket-dir
           resources: {{- toYaml .Values.controller.resources.csiProvisioner | nindent 12 }}
+          securityContext:
+            {{- with .Values.securityContext.default }}
+              {{- . | toYaml | nindent 12 }}
+            {{- end }}
         - name: csi-attacher
           image: "{{ .Values.image.baseRepo }}{{ .Values.image.csiAttacher.repository }}:{{ .Values.image.csiAttacher.tag }}"
           args:
@@ -80,6 +88,10 @@ spec:
           - mountPath: /csi
             name: socket-dir
           resources: {{- toYaml .Values.controller.resources.csiAttacher | nindent 12 }}
+          securityContext:
+            {{- with .Values.securityContext.default }}
+              {{- . | toYaml | nindent 12 }}
+            {{- end }}
         - name: csi-snapshotter
           image: "{{ .Values.image.baseRepo }}{{ .Values.snapshot.image.csiSnapshotter.repository }}:{{ .Values.snapshot.image.csiSnapshotter.tag }}"
           args:
@@ -93,6 +105,10 @@ spec:
             - name: socket-dir
               mountPath: /csi
           resources: {{- toYaml .Values.controller.resources.csiSnapshotter | nindent 12 }}
+          securityContext:
+            {{- with .Values.securityContext.default }}
+              {{- . | toYaml | nindent 12 }}
+            {{- end }}
         - name: csi-resizer
           image: "{{ .Values.image.baseRepo }}{{ .Values.image.csiResizer.repository }}:{{ .Values.image.csiResizer.tag }}"
           args:
@@ -110,6 +126,10 @@ spec:
             - name: socket-dir
               mountPath: /csi
           resources: {{- toYaml .Values.controller.resources.csiResizer | nindent 12 }}
+          securityContext:
+            {{- with .Values.securityContext.default }}
+              {{- . | toYaml | nindent 12 }}
+            {{- end }}
         - name: liveness-probe
           image: "{{ .Values.image.baseRepo }}{{ .Values.image.livenessProbe.repository }}:{{ .Values.image.livenessProbe.tag }}"
           args:
@@ -121,6 +141,10 @@ spec:
             - name: socket-dir
               mountPath: /csi
           resources: {{- toYaml .Values.controller.resources.livenessProbe | nindent 12 }}
+          securityContext:
+            {{- with .Values.securityContext.default }}
+              {{- . | toYaml | nindent 12 }}
+            {{- end }}
         - name: azuredisk
           image: "{{ .Values.image.baseRepo }}{{ .Values.image.azuredisk.repository }}:{{ .Values.image.azuredisk.tag }}"
           args:
@@ -175,6 +199,10 @@ spec:
             - mountPath: /etc/kubernetes/
               name: azure-cred
           resources: {{- toYaml .Values.controller.resources.azuredisk | nindent 12 }}
+          securityContext:
+            {{- with .Values.securityContext.default }}
+              {{- . | toYaml | nindent 12 }}
+            {{- end }}
       volumes:
         - name: socket-dir
           emptyDir: {}

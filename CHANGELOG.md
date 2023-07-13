@@ -7,6 +7,11 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Added
+
+- **Breaking:** added policy exceptions. this makes app dependent on kyverno.
+- Added required values for pss policies.
+
 ## [1.26.2-gs4] - 2023-05-10
 
 ### Changed

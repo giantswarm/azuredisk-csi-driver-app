@@ -23,6 +23,10 @@ spec:
 {{- end }}
     spec:
       serviceAccountName: {{ .Values.serviceAccount.snapshotController }}
+      securityContext:
+        {{- with .Values.podSecurityContext }}
+          {{- . | toYaml | nindent 8 }}
+        {{- end }}
       nodeSelector:
         kubernetes.io/os: linux
       priorityClassName: system-cluster-critical
@@ -43,4 +47,8 @@ spec:
             - "--leader-election-namespace={{ .Release.Namespace }}"
           resources: {{- toYaml .Values.snapshot.snapshotController.resources | nindent 12 }}
           imagePullPolicy: {{ .Values.snapshot.image.csiSnapshotController.pullPolicy }}
+          securityContext:
+            {{- with .Values.securityContext.default }}
+              {{- . | toYaml | nindent 12 }}
+            {{- end }}
 {{- end -}}

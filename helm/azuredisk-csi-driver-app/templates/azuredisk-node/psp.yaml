@@ -4,6 +4,8 @@ kind: PodSecurityPolicy
 metadata:
   name: {{ .Values.name }}-node
   namespace: {{ .Release.Namespace }}
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'runtime/default'
   labels:
 {{ include "azuredisk.labels" . | indent 4 }}
 spec:
