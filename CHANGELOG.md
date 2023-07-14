@@ -9,6 +9,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [1.27.0] - 2023-07-14
 
+## [1.27.0] - 2023-07-14
+
 ### Fixed
 
 - **Breaking:** added policy exceptions. this makes app dependent on kyverno.
@@ -139,6 +141,7 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 - Initial release with upstream version 1.13.0.
 
 [Unreleased]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.27.0...HEAD
+[1.27.0]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.27.0...v1.27.0
 [1.27.0]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.26.2-gs4...v1.27.0
 [1.26.2-gs4]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.26.2-gs3...v1.26.2-gs4
 [1.26.2-gs3]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.26.2-gs2...v1.26.2-gs3
