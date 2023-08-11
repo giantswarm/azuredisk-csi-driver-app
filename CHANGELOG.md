@@ -7,6 +7,10 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Changed
+
+- Add flag for PSP disabling.
+
 ## [1.27.0] - 2023-07-14
 
 ### Fixed

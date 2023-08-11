@@ -1,4 +1,5 @@
-{{ if .Capabilities.APIVersions.Has "kyverno.io/v2alpha1/PolicyException" -}}
+{{- if .Values.global.podSecurityStandart.enforced }}
+{{- if .Capabilities.APIVersions.Has "kyverno.io/v2alpha1/PolicyException" }}
 apiVersion: kyverno.io/v2alpha1
 kind: PolicyException
 metadata:
@@ -49,4 +50,5 @@ spec:
         - {{ .Release.Namespace }}
         names:
         - {{ .Values.linux.dsName }}*
+{{- end }}
 {{- end }}
