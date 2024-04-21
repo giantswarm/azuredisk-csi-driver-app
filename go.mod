@@ -2,7 +2,7 @@ module github.com/giantswarm/azuredisk-csi-driver-app
 
 go 1.21
 
-toolchain go1.21.5
+toolchain go1.22.2
 
 require (
 	github.com/giantswarm/apptest v1.3.0
