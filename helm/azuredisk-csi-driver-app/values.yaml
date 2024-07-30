@@ -165,7 +165,7 @@ snapshot:
         cpu: 10m
         memory: 20Mi
   VolumeSnapshotClass:
-    enabled: true
+    enabled: false
     name: csi-azuredisk-vsc
     deletionPolicy: Delete
     parameters:
