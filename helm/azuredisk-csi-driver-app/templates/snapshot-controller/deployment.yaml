@@ -29,7 +29,7 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-    labels:
+      labels:
 {{ include "azuredisk.labels" . | indent 8 }}
         app: {{ .Values.snapshot.snapshotController.name }}
 {{- with .Values.snapshot.snapshotController.podLabels }}

@@ -25,7 +25,7 @@ image:
     pullPolicy: IfNotPresent
   livenessProbe:
     repository: livenessprobe
-    tag: v2.13.0
+    tag: v2.8.0
     pullPolicy: IfNotPresent
   nodeDriverRegistrar:
     repository: csi-node-driver-registrar
@@ -189,7 +189,7 @@ driver:
 linux:
   enabled: true
   dsName: csi-azuredisk-node  # daemonset name
-  azure_credential_file: /etc/kubernetes/config/azure.yaml
+  azure_credential_file: /etc/kubernetes/azure.yaml
   kubelet: /var/lib/kubelet
   distro: flatcar  # available values: debian, fedora
   enablePerfOptimization: true
