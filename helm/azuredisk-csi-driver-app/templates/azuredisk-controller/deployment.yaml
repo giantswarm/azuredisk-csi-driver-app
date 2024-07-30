@@ -4,10 +4,14 @@ apiVersion: apps/v1
 metadata:
   name: {{ .Values.controller.name }}
   namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ .Values.controller.name }}
-    app.kubernetes.io/component: "azurediskController"
-{{ include "azuredisk.labels" . | indent 4 }}
+{{ include "azuredisk.labels" . | indent 2 }}
+{{- with .Values.controller.labels }}
+{{ . | toYaml | indent 4 }}
+{{- end }}
+{{- with .Values.controller.annotations }}
+  annotations:
+{{ . | toYaml | indent 4 }}
+{{- end }}
 spec:
   replicas: {{ .Values.controller.replicas }}
   selector:
@@ -15,13 +19,23 @@ spec:
       app: {{ .Values.controller.name }}
   template:
     metadata:
-      labels:
-{{ include "azuredisk.labels" . | indent 8 }}
+{{ include "azuredisk.labels" . | indent 6 }}
         app: {{ .Values.controller.name }}
+        {{- if .Values.workloadIdentity.clientID }}
+        azure.workload.identity/use: "true"
+        {{- end }}
 {{- with .Values.controller.podLabels }}
 {{ toYaml . | indent 8 }}
 {{- end }}
+{{- with .Values.controller.podAnnotations }}
+      annotations:
+{{ toYaml . | indent 8 }}
+{{- end }}
     spec:
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
       hostNetwork: {{ .Values.controller.hostNetwork }}
       serviceAccountName: {{ .Values.serviceAccount.controller }}
       securityContext:
@@ -30,12 +44,19 @@ spec:
         {{- end }}
       nodeSelector:
         kubernetes.io/os: linux
+{{- with .Values.controller.nodeSelector }}
+{{ toYaml . | indent 8 }}
+{{- end }}
         {{- if .Values.controller.runOnMaster}}
-        {{-  range $key, $value := $.Values.controller.masterNodeSelector }}
-        {{ $key }}: {{ $value }}
+        node-role.kubernetes.io/master: ""
         {{- end}}
+        {{- if .Values.controller.runOnControlPlane}}
+        node-role.kubernetes.io/control-plane: ""
         {{- end}}
       priorityClassName: system-cluster-critical
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
 {{- with .Values.controller.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
@@ -44,11 +65,12 @@ spec:
       affinity:
 {{ toYaml . | indent 8 }}
 {{- end }}
+      {{- include "azuredisk.pullSecrets" . | indent 6 }}
       containers:
         - name: csi-provisioner
           image: "{{ .Values.image.baseRepo }}{{ .Values.image.csiProvisioner.repository }}:{{ .Values.image.csiProvisioner.tag }}"
           args:
-            - "--feature-gates=Topology=true"
+            - "--feature-gates=Topology=true,HonorPVReclaimPolicy=true"
             - "--csi-address=$(ADDRESS)"
             - "--v=2"
             - "--timeout=30s"
@@ -79,8 +101,8 @@ spec:
             - "-leader-election"
             - "--leader-election-namespace={{ .Release.Namespace }}"
             - "-worker-threads={{ .Values.controller.attacherWorkerThreads }}"
-            - "-kube-api-qps=50"
-            - "-kube-api-burst=100"
+            - "-kube-api-qps=200"
+            - "-kube-api-burst=400"
           env:
             - name: ADDRESS
               value: /csi/csi.sock
@@ -97,7 +119,9 @@ spec:
           args:
             - "-csi-address=$(ADDRESS)"
             - "-leader-election"
+            - "--leader-election-namespace={{ .Release.Namespace }}"
             - "-v=2"
+            - "--timeout=1200s"
           env:
             - name: ADDRESS
               value: /csi/csi.sock
@@ -152,24 +176,40 @@ spec:
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--metrics-address=0.0.0.0:{{ .Values.controller.metricsPort }}"
             - "--disable-avset-nodes={{ .Values.controller.disableAvailabilitySetNodes }}"
+            - "--vm-type={{ .Values.controller.vmType }}"
             - "--drivername={{ .Values.driver.name }}"
             - "--cloud-config-secret-name={{ .Values.controller.cloudConfigSecretName }}"
             - "--cloud-config-secret-namespace={{ .Values.controller.cloudConfigSecretNamespace }}"
             - "--custom-user-agent={{ .Values.driver.customUserAgent }}"
             - "--user-agent-suffix={{ .Values.driver.userAgentSuffix }}"
             - "--allow-empty-cloud-config={{ .Values.controller.allowEmptyCloudConfig }}"
+            - "--vmss-cache-ttl-seconds={{ .Values.controller.vmssCacheTTLInSeconds }}"
+            - "--enable-traffic-manager={{ .Values.controller.enableTrafficManager }}"
+            - "--traffic-manager-port={{ .Values.controller.trafficManagerPort }}"
+            - "--enable-otel-tracing={{ .Values.controller.otelTracing.enabled }}"
+            - "--check-disk-lun-collision=true"
+            {{- range $value := .Values.controller.extraArgs }}
+            - {{ $value | quote }}
+            {{- end }}
           ports:
-            - containerPort: {{ .Values.controller.livenessProbe.healthPort }}
-              name: healthz
-              protocol: TCP
             - containerPort: {{ .Values.controller.metricsPort }}
               name: metrics
               protocol: TCP
+{{- if ne .Values.controller.hostNetwork true }}
+            - containerPort: {{ .Values.controller.livenessProbe.healthPort }}
+              name: healthz
+              protocol: TCP
+{{- end }}
           livenessProbe:
             failureThreshold: 5
             httpGet:
               path: /healthz
+{{- if eq .Values.controller.hostNetwork true }}
+              host: localhost
+              port: {{ .Values.controller.livenessProbe.healthPort }}
+{{- else }}
               port: healthz
+{{- end }}
             initialDelaySeconds: 30
             timeoutSeconds: 10
             periodSeconds: 30
@@ -198,6 +238,19 @@ spec:
               name: socket-dir
             - mountPath: /etc/kubernetes/
               name: azure-cred
+            {{- if eq .Values.cloud "AzureStackCloud" }}
+            - name: ssl
+              mountPath: /etc/ssl/certs
+              readOnly: true
+            {{- end }}
+            {{- if eq .Values.linux.distro "fedora" }}
+            - name: ssl
+              mountPath: /etc/ssl/certs
+              readOnly: true
+            - name: ssl-pki
+              mountPath: /etc/pki/ca-trust/extracted
+              readOnly: true
+            {{- end }}
           resources: {{- toYaml .Values.controller.resources.azuredisk | nindent 12 }}
           securityContext:
             {{- with .Values.securityContext.default }}
@@ -210,4 +263,16 @@ spec:
           hostPath:
             path: /etc/kubernetes/
             type: DirectoryOrCreate
-
+        {{- if eq .Values.cloud "AzureStackCloud" }}
+        - name: ssl
+          hostPath:
+            path: /etc/ssl/certs
+        {{- end }}
+        {{- if eq .Values.linux.distro "fedora" }}
+        - name: ssl
+          hostPath:
+            path: /etc/ssl/certs
+        - name: ssl-pki
+          hostPath:
+            path: /etc/pki/ca-trust/extracted
+        {{- end }}

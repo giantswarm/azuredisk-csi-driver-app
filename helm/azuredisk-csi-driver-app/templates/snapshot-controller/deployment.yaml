@@ -4,21 +4,37 @@ apiVersion: apps/v1
 metadata:
   name: {{ .Values.snapshot.snapshotController.name }}
   namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ .Values.snapshot.snapshotController.name }}
-    app.kubernetes.io/component: "snapshotController"
-{{ include "azuredisk.labels" . | indent 4 }}
+{{ include "azuredisk.labels" . | indent 2 }}
+{{- with .Values.snapshot.snapshotController.labels }}
+{{ . | toYaml | indent 4 }}
+{{- end }}
+{{- with .Values.snapshot.snapshotController.annotations }}
+  annotations:
+{{ . | toYaml | indent 4 }}
+{{- end }}
 spec:
   replicas: {{ .Values.snapshot.snapshotController.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.snapshot.snapshotController.name }}
+  # the snapshot controller won't be marked as ready if the v1 CRDs are unavailable
+  # in #504 the snapshot-controller will exit after around 7.5 seconds if it
+  # can't find the v1 CRDs so this value should be greater than that
+  minReadySeconds: 15
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
-      labels:
-{{ include "azuredisk.labels" . | indent 8 }}
+{{ include "azuredisk.labels" . | indent 6 }}
         app: {{ .Values.snapshot.snapshotController.name }}
 {{- with .Values.snapshot.snapshotController.podLabels }}
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.snapshot.snapshotController.podAnnotations }}
+      annotations:
 {{ toYaml . | indent 8 }}
 {{- end }}
     spec:
@@ -30,6 +46,9 @@ spec:
       nodeSelector:
         kubernetes.io/os: linux
       priorityClassName: system-cluster-critical
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
 {{- with .Values.controller.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
@@ -38,6 +57,7 @@ spec:
       affinity:
 {{ toYaml . | indent 8 }}
 {{- end }}
+      {{- include "azuredisk.pullSecrets" . | indent 6 }}
       containers:
         - name: {{ .Values.snapshot.snapshotController.name }}
           image: "{{ .Values.image.baseRepo }}{{ .Values.snapshot.image.csiSnapshotController.repository }}:{{ .Values.snapshot.image.csiSnapshotController.tag }}"
@@ -51,4 +71,27 @@ spec:
             {{- with .Values.securityContext.default }}
               {{- . | toYaml | nindent 12 }}
             {{- end }}
+---
+{{- if .Values.snapshot.VolumeSnapshotClass.enabled -}}
+kind: VolumeSnapshotClass
+apiVersion: snapshot.storage.k8s.io/v1
+metadata:
+  name: {{ .Values.snapshot.VolumeSnapshotClass.name }}
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": post-install
+driver: {{ .Values.driver.name }}
+deletionPolicy: {{ .Values.snapshot.VolumeSnapshotClass.deletionPolicy }}
+parameters:
+  incremental: {{ .Values.snapshot.VolumeSnapshotClass.parameters.incremental }}
+  {{- if ne .Values.snapshot.VolumeSnapshotClass.parameters.resourceGroup "" }}
+  resourceGroup: {{ .Values.snapshot.VolumeSnapshotClass.parameters.resourceGroup }}
+  {{- end }}
+  tags: {{ .Values.snapshot.VolumeSnapshotClass.parameters.tags }}
+{{- with .Values.snapshot.VolumeSnapshotClass.additionalLabels }}
+additionalLabels:
+{{ toYaml . | indent 2 }}
+{{- end }}
+{{- end -}}
 {{- end -}}
