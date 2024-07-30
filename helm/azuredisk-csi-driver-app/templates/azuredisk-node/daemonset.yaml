@@ -6,9 +6,14 @@ metadata:
   name: {{ .Values.linux.dsName }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ .Values.linux.dsName }}
-    app.kubernetes.io/component: "azurediskNode"
 {{ include "azuredisk.labels" . | indent 4 }}
+{{- with .Values.linux.labels }}
+{{ . | toYaml | indent 4 }}
+{{- end }}
+{{- with .Values.linux.annotations }}
+  annotations:
+{{ . | toYaml | indent 4 }}
+{{- end }}
 spec:
   updateStrategy:
     rollingUpdate:
@@ -22,10 +27,21 @@ spec:
       labels:
 {{ include "azuredisk.labels" . | indent 8 }}
         app: {{ .Values.linux.dsName }}
+        {{- if .Values.workloadIdentity.clientID }}
+        azure.workload.identity/use: "true"
+        {{- end }}
 {{- with .Values.linux.podLabels }}
 {{ toYaml . | indent 8 }}
 {{- end }}
+{{- with .Values.linux.podAnnotations }}
+      annotations:
+{{ toYaml . | indent 8 }}
+{{- end }}
     spec:
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
       hostNetwork: {{ .Values.linux.hostNetwork }}
       dnsPolicy: Default
       serviceAccountName: {{ .Values.serviceAccount.node }}
@@ -35,14 +51,24 @@ spec:
         {{- end }}
       nodeSelector:
         kubernetes.io/os: linux
+{{- with .Values.linux.nodeSelector }}
+{{ toYaml . | indent 8 }}
+{{- end }}
       affinity:
+{{- with .Values.linux.affinity }}
+{{ toYaml . | indent 8 }}
+{{- end }}
         nodeAffinity:
 {{ toYaml .Values.linux.nodeAffinity | indent 10 }}
       priorityClassName: system-node-critical
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
 {{- with .Values.linux.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
 {{- end }}
+      {{- include "azuredisk.pullSecrets" . | indent 6 }}
       containers:
         - name: liveness-probe
           volumeMounts:
@@ -52,7 +78,7 @@ spec:
           args:
             - --csi-address=/csi/csi.sock
             - --probe-timeout=3s
-            - --health-port={{ .Values.node.livenessProbe.healthPort }}
+            - --http-endpoint=localhost:{{ .Values.node.livenessProbe.healthPort }}
             - --v=2
           resources: {{- toYaml .Values.linux.resources.livenessProbe | nindent 12 }}
           securityContext:
@@ -65,6 +91,7 @@ spec:
             - --csi-address=$(ADDRESS)
             - --kubelet-registration-path=$(DRIVER_REG_SOCK_PATH)
             - --v=2
+{{- if .Values.linux.enableRegistrationProbe }}
           livenessProbe:
             exec:
               command:
@@ -73,6 +100,7 @@ spec:
                 - --mode=kubelet-registration-probe
             initialDelaySeconds: 30
             timeoutSeconds: 15
+{{- end }}
           env:
             - name: ADDRESS
               value: /csi/csi.sock
@@ -98,22 +126,22 @@ spec:
             - "--enable-perf-optimization={{ .Values.linux.enablePerfOptimization }}"
             - "--drivername={{ .Values.driver.name }}"
             - "--volume-attach-limit={{ .Values.driver.volumeAttachLimit }}"
+            - "--reserved-data-disk-slot-num={{ .Values.node.reservedDataDiskSlotNum }}"
             - "--cloud-config-secret-name={{ .Values.node.cloudConfigSecretName }}"
             - "--cloud-config-secret-namespace={{ .Values.node.cloudConfigSecretNamespace }}"
             - "--custom-user-agent={{ .Values.driver.customUserAgent }}"
             - "--user-agent-suffix={{ .Values.driver.userAgentSuffix }}"
             - "--allow-empty-cloud-config={{ .Values.node.allowEmptyCloudConfig }}"
-            - "--support-zone=true"
-            - "--get-node-info-from-labels=false"
-          ports:
-            - containerPort: {{ .Values.node.livenessProbe.healthPort }}
-              name: healthz
-              protocol: TCP
+            - "--support-zone={{ .Values.node.supportZone }}"
+            - "--get-node-info-from-labels={{ .Values.linux.getNodeInfoFromLabels }}"
+            - "--get-nodeid-from-imds={{ .Values.node.getNodeIDFromIMDS }}"
+            - "--enable-otel-tracing={{ .Values.linux.otelTracing.enabled }}"
           livenessProbe:
             failureThreshold: 5
             httpGet:
+              host: localhost
               path: /healthz
-              port: healthz
+              port: {{ .Values.node.livenessProbe.healthPort }}
             initialDelaySeconds: 30
             timeoutSeconds: 10
             periodSeconds: 30
@@ -141,12 +169,27 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: spec.nodeName
+            - name: AZURE_GO_SDK_LOG_LEVEL
+              value: {{ .Values.driver.azureGoSDKLogLevel }}
+            {{- if eq .Values.cloud "AzureStackCloud" }}
+            - name: AZURE_ENVIRONMENT_FILEPATH
+              value: /etc/kubernetes/azurestackcloud.json
+            {{- end }}
+            {{- if .Values.linux.otelTracing.enabled }}
+            - name: OTEL_SERVICE_NAME
+              value: {{ .Values.linux.otelTracing.otelServiceName }}
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ .Values.linux.otelTracing.otelExporterEndpoint }}
+            {{- end }}
           imagePullPolicy: {{ .Values.image.azuredisk.pullPolicy }}
           securityContext:
             {{- with .Values.securityContext.node }}
               {{- . | toYaml | nindent 12 }}
             {{- end }}
             privileged: true
+            capabilities:
+              drop:
+              - ALL
           volumeMounts:
             - mountPath: /csi
               name: socket-dir
@@ -161,6 +204,19 @@ spec:
               name: sys-devices-dir
             - mountPath: /sys/class/
               name: sys-class
+            {{- if eq .Values.cloud "AzureStackCloud" }}
+            - name: ssl
+              mountPath: /etc/ssl/certs
+              readOnly: true
+            {{- end }}
+            {{- if eq .Values.linux.distro "fedora" }}
+            - name: ssl
+              mountPath: /etc/ssl/certs
+              readOnly: true
+            - name: ssl-pki
+              mountPath: /etc/pki/ca-trust/extracted
+              readOnly: true
+            {{- end }}
           resources: {{- toYaml .Values.linux.resources.azuredisk | nindent 12 }}
       volumes:
         - hostPath:
@@ -191,5 +247,17 @@ spec:
             path: /sys/class/
             type: Directory
           name: sys-class
-
-{{- end }}
+        {{- if eq .Values.cloud "AzureStackCloud" }}
+        - name: ssl
+          hostPath:
+            path: /etc/ssl/certs
+        {{- end }}
+        {{- if eq .Values.linux.distro "fedora" }}
+        - name: ssl
+          hostPath:
+            path: /etc/ssl/certs
+        - name: ssl-pki
+          hostPath:
+            path: /etc/pki/ca-trust/extracted
+        {{- end }}
+{{- end -}}
