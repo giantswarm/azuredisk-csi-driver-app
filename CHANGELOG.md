@@ -7,6 +7,10 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Fixed
+
+- Remove duplication key `securityContext`.
+
 ## [1.30.2-gs1] - 2024-07-30
 
 ### Changed

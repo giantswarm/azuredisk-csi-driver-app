@@ -48,9 +48,6 @@ spec:
       nodeSelector:
         kubernetes.io/os: linux
       priorityClassName: system-cluster-critical
-      securityContext:
-        seccompProfile:
-          type: RuntimeDefault
 {{- with .Values.controller.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
