@@ -11,13 +11,12 @@
 
 {{/* labels for helm resources */}}
 {{- define "azuredisk.labels" -}}
-labels:
-  app.kubernetes.io/instance: "{{ .Release.Name }}"
-  app.kubernetes.io/managed-by: "{{ .Release.Service }}"
-  app.kubernetes.io/name: "{{ template "azuredisk.name" . }}"
-  app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
-  helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-  application.giantswarm.io/team: {{ index .Chart.Annotations "application.giantswarm.io/team" | quote }}
+app.kubernetes.io/instance: "{{ .Release.Name }}"
+app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+app.kubernetes.io/name: "{{ template "azuredisk.name" . }}"
+app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
+helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+application.giantswarm.io/team: {{ index .Chart.Annotations "application.giantswarm.io/team" | quote }}
 {{- end -}}
 
 {{/* pull secrets for containers */}}

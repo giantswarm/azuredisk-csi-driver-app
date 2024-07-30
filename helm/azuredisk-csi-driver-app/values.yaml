@@ -33,10 +33,10 @@ image:
     pullPolicy: IfNotPresent
 
 serviceAccount:
-  create: true # When true, service accounts will be created for you. Set to false if you want to use your own.
-  controller: csi-azuredisk-controller-sa # Name of Service Account to be created or used
-  node: csi-azuredisk-node-sa # Name of Service Account to be created or used
-  snapshotController: csi-snapshot-controller-sa # Name of Service Account to be created or used
+  create: true  # When true, service accounts will be created for you. Set to false if you want to use your own.
+  controller: csi-azuredisk-controller-sa  # Name of Service Account to be created or used
+  node: csi-azuredisk-node-sa  # Name of Service Account to be created or used
+  snapshotController: csi-snapshot-controller-sa  # Name of Service Account to be created or used
 
 rbac:
   create: true
@@ -76,7 +76,7 @@ controller:
     - key: "node-role.kubernetes.io/control-plane"
       operator: "Exists"
       effect: "NoSchedule"
-  hostNetwork: true # this setting could be disabled if controller does not depend on MSI setting
+  hostNetwork: true  # this setting could be disabled if controller does not depend on MSI setting
   labels: {}
   annotations: {}
   podLabels: {}
@@ -128,7 +128,7 @@ node:
   cloudConfigSecretNamespace: kube-system
   # reserved data disk slot number per node, driver.volumeAttachLimit must be < 0
   reservedDataDiskSlotNum: 0
-  supportZone: true
+  supportZone: false
   allowEmptyCloudConfig: true
   getNodeIDFromIMDS: false
   maxUnavailable: 1
@@ -138,7 +138,7 @@ node:
     healthPort: 29603
 
 snapshot:
-  enabled: false
+  enabled: true
   name: csi-snapshot-controller
   image:
     csiSnapshotter:
@@ -165,13 +165,13 @@ snapshot:
         cpu: 10m
         memory: 20Mi
   VolumeSnapshotClass:
-    enabled: false
+    enabled: true
     name: csi-azuredisk-vsc
     deletionPolicy: Delete
     parameters:
-      incremental: '"true"' # available values: "true", "false" ("true" by default for Azure Public Cloud, and "false" by default for Azure Stack Cloud)
-      resourceGroup: "" # available values: EXISTING RESOURCE GROUP (If not specified, snapshot will be stored in the same resource group as source Azure disk)
-      tags: "" # tag format: 'key1=val1,key2=val2'
+      incremental: '"true"'  # available values: "true", "false" ("true" by default for Azure Public Cloud, and "false" by default for Azure Stack Cloud)
+      resourceGroup: ""  # available values: EXISTING RESOURCE GROUP (If not specified, snapshot will be stored in the same resource group as source Azure disk)
+      tags: ""  # tag format: 'key1=val1,key2=val2'
     additionalLabels: {}
 
 feature:
@@ -184,14 +184,14 @@ driver:
   volumeAttachLimit: -1
   customUserAgent: ""
   userAgentSuffix: "giantswarm"
-  azureGoSDKLogLevel: "" # available values: ""(no logs), DEBUG, INFO, WARNING, ERROR
+  azureGoSDKLogLevel: ""  # available values: ""(no logs), DEBUG, INFO, WARNING, ERROR
 
 linux:
   enabled: true
-  dsName: csi-azuredisk-node # daemonset name
+  dsName: csi-azuredisk-node  # daemonset name
   azure_credential_file: /etc/kubernetes/config/azure.yaml
   kubelet: /var/lib/kubelet
-  distro: flatcar # available values: debian, fedora
+  distro: flatcar  # available values: debian, fedora
   enablePerfOptimization: true
   enableRegistrationProbe: true
   otelTracing:
@@ -200,8 +200,8 @@ linux:
     otelExporterEndpoint: "http://localhost:4317"
   tolerations:
     - operator: "Exists"
-  hostNetwork: true # this setting could be disabled if perfProfile is `none`
-  getNodeInfoFromLabels: false # get node info from node labels instead of IMDS
+  hostNetwork: true  # this setting could be disabled if perfProfile is `none`
+  getNodeInfoFromLabels: false  # get node info from node labels instead of IMDS
   labels: {}
   annotations: {}
   podLabels: {}

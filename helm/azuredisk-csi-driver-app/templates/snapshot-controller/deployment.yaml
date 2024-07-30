@@ -4,7 +4,8 @@ apiVersion: apps/v1
 metadata:
   name: {{ .Values.snapshot.snapshotController.name }}
   namespace: {{ .Release.Namespace }}
-{{ include "azuredisk.labels" . | indent 2 }}
+  labels:
+{{ include "azuredisk.labels" . | indent 4 }}
 {{- with .Values.snapshot.snapshotController.labels }}
 {{ . | toYaml | indent 4 }}
 {{- end }}
@@ -28,7 +29,8 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-{{ include "azuredisk.labels" . | indent 6 }}
+    labels:
+{{ include "azuredisk.labels" . | indent 8 }}
         app: {{ .Values.snapshot.snapshotController.name }}
 {{- with .Values.snapshot.snapshotController.podLabels }}
 {{ toYaml . | indent 8 }}

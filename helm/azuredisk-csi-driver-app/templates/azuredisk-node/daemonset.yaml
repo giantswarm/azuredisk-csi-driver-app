@@ -5,7 +5,8 @@ apiVersion: apps/v1
 metadata:
   name: {{ .Values.linux.dsName }}
   namespace: {{ .Release.Namespace }}
-{{ include "azuredisk.labels" . | indent 2 }}
+  labels:
+{{ include "azuredisk.labels" . | indent 4 }}
 {{- with .Values.linux.labels }}
 {{ . | toYaml | indent 4 }}
 {{- end }}
@@ -23,7 +24,8 @@ spec:
       app: {{ .Values.linux.dsName }}
   template:
     metadata:
-{{ include "azuredisk.labels" . | indent 6 }}
+      labels:
+{{ include "azuredisk.labels" . | indent 8 }}
         app: {{ .Values.linux.dsName }}
         {{- if .Values.workloadIdentity.clientID }}
         azure.workload.identity/use: "true"
