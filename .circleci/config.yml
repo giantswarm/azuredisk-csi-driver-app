@@ -3,8 +3,7 @@ orbs:
   architect: giantswarm/architect@5.11.4
 
 workflows:
-  version: 2
-  build:
+  package-and-push-chart-on-tag:
     jobs:
       - architect/push-to-app-catalog:
           context: architect
