@@ -4,11 +4,12 @@ orbs:
   architect: giantswarm/architect@5.11.4
 
 workflows:
+  version: 2
   build:
     jobs:
       - architect/push-to-app-catalog:
           context: architect
-          name: push-to-control-plane-catalog
+          name: push-to-app-catalog
           executor: app-build-suite
           app_catalog: control-plane-catalog
           app_catalog_test: control-plane-test-catalog
@@ -20,20 +21,3 @@ workflows:
               only: /^v.*/
             branches:
               only: /.*/
-
-      - architect/push-to-app-catalog:
-          context: architect
-          name: push-to-default-catalog
-          executor: app-build-suite
-          app_catalog: default-catalog
-          app_catalog_test: default-test-catalog
-          chart: azuredisk-csi-driver-app
-          abs_configmap: .abs/default/main.yaml
-          requires:
-            - push-to-control-plane-catalog
-          filters:
-            # Trigger job on both PRs and tags
-            tags:
-              only: /^v.*/
-            branches:
-              only: /.*/ 
