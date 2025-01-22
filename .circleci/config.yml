@@ -15,8 +15,9 @@ workflows:
           chart: azuredisk-csi-driver-app
           abs_configmap: .abs/control-plane/main.yaml
           filters:
-            # Trigger job on both PRs and tags
             tags:
               only: /^v.*/
             branches:
-              only: /.*/
+              ignore:
+              - main
+              - master
