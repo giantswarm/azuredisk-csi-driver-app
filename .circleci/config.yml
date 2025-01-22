@@ -4,7 +4,6 @@ orbs:
   architect: giantswarm/architect@5.11.4
 
 workflows:
-  # Development workflow for feature branches
   build:
     jobs:
       - architect/push-to-app-catalog:
@@ -14,13 +13,12 @@ workflows:
           app_catalog: control-plane-catalog
           app_catalog_test: control-plane-test-catalog
           chart: azuredisk-csi-driver-app
-          abs_configmap: .abs/control-plane/main.yaml
           filters:
-            # Trigger on PR
+            # Trigger job on both PRs and tags
+            tags:
+              only: /^v.*/
             branches:
               only: /.*/
-            tags:
-              ignore: /^v.*/
 
       - architect/push-to-app-catalog:
           context: architect
@@ -29,45 +27,11 @@ workflows:
           app_catalog: default-catalog
           app_catalog_test: default-test-catalog
           chart: azuredisk-csi-driver-app
-          abs_configmap: .abs/default/main.yaml
           requires:
             - push-to-control-plane-catalog
           filters:
-            branches:
-              only: /.*/
-            tags:
-              ignore: /^v.*/
-
-  # Release workflow for version tags
-  package-and-push-chart-on-tag:
-    jobs:
-      - architect/push-to-app-catalog:
-          context: architect
-          name: push-to-control-plane-catalog
-          executor: app-build-suite
-          app_catalog: control-plane-catalog
-          app_catalog_test: control-plane-test-catalog
-          chart: azuredisk-csi-driver-app
-          abs_configmap: .abs/control-plane/main.yaml
-          filters:
-            # Trigger on version tags
+            # Trigger job on both PRs and tags
             tags:
               only: /^v.*/
             branches:
-              ignore: /.*/
-
-      - architect/push-to-app-catalog:
-          context: architect
-          name: push-to-default-catalog
-          executor: app-build-suite
-          app_catalog: default-catalog
-          app_catalog_test: default-test-catalog
-          chart: azuredisk-csi-driver-app
-          abs_configmap: .abs/default/main.yaml
-          requires:
-            - push-to-control-plane-catalog
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/ 
+              only: /.*/ 
