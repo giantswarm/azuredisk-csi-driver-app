@@ -3,7 +3,35 @@ orbs:
   architect: giantswarm/architect@5.11.4
 
 workflows:
-  package-and-push-chart-on-tag:
+  build:
+    jobs:
+      - architect/push-to-app-catalog:
+          context: architect
+          executor: app-build-suite
+          name: push-to-control-plane-app-catalog
+          app_catalog: control-plane-catalog
+          app_catalog_test: control-plane-test-catalog
+          chart: azuredisk-csi-driver-app
+          abs_configmap: .abs/control-plane/main.yaml
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only: /.*/
+
+      - architect/push-to-app-catalog:
+          context: architect
+          executor: app-build-suite
+          name: push-to-default-app-catalog
+          app_catalog: default-catalog
+          app_catalog_test: default-test-catalog
+          chart: azuredisk-csi-driver-app
+          abs_configmap: .abs/default/main.yaml
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only: /.*/
     jobs:
       - architect/push-to-app-catalog:
           context: architect
