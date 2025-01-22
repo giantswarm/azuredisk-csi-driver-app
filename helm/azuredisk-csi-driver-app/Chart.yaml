@@ -1,14 +1,16 @@
 apiVersion: v2
-appVersion: 1.30.2
-description: A Helm chart to run Azure CSI driver for Azure Disks.
-icon: https://s.giantswarm.io/app-icons/azure/1/dark.svg
-home: https://github.com/giantswarm/azuredisk-csi-driver-app
 name: azuredisk-csi-driver-app
-version: [[ .Version ]]
+description: A Helm chart to run Azure CSI driver for Azure Disks.
+version: 0.0.1-dev
+appVersion: 0.0.1-dev
+home: https://github.com/giantswarm/azuredisk-csi-driver-app
+icon: https://s.giantswarm.io/app-icons/azure/1/dark.svg
+annotations:
+  application.giantswarm.io/team: phoenix
+  config.giantswarm.io/version: 1.x.x
+  ui.giantswarm.io/logo: https://s.giantswarm.io/app-icons/azure/1/dark.svg
 restrictions:
   clusterSingleton: true
   fixedNamespace: kube-system
   gpuInstances: false
   compatibleProviders: [azure]
-annotations:
-  application.giantswarm.io/team: phoenix
