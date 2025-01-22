@@ -3,40 +3,44 @@ orbs:
   architect: giantswarm/architect@5.11.4
 
 workflows:
+  # Push to app catalog for branches (development)
   build:
     jobs:
       - architect/push-to-app-catalog:
           context: architect
           executor: app-build-suite
-          name: push-to-control-plane-app-catalog
+          name: push-to-control-plane-catalog
           app_catalog: control-plane-catalog
           app_catalog_test: control-plane-test-catalog
           chart: azuredisk-csi-driver-app
           abs_configmap: .abs/control-plane/main.yaml
           filters:
-            tags:
-              only: /^v.*/
             branches:
               only: /.*/
+            tags:
+              ignore: /.*/
 
       - architect/push-to-app-catalog:
           context: architect
           executor: app-build-suite
-          name: push-to-default-app-catalog
+          name: push-to-default-catalog
           app_catalog: default-catalog
           app_catalog_test: default-test-catalog
           chart: azuredisk-csi-driver-app
           abs_configmap: .abs/default/main.yaml
           filters:
-            tags:
-              only: /^v.*/
             branches:
               only: /.*/
+            tags:
+              ignore: /.*/
+
+  # Push to app catalog for tags (releases)
+  release:
     jobs:
       - architect/push-to-app-catalog:
           context: architect
           executor: app-build-suite
-          name: push-to-control-plane-app-catalog
+          name: push-to-control-plane-catalog
           app_catalog: control-plane-catalog
           app_catalog_test: control-plane-test-catalog
           chart: azuredisk-csi-driver-app
@@ -45,12 +49,12 @@ workflows:
             tags:
               only: /^v.*/
             branches:
-              only: /.*/
+              ignore: /.*/
 
       - architect/push-to-app-catalog:
           context: architect
           executor: app-build-suite
-          name: push-to-default-app-catalog
+          name: push-to-default-catalog
           app_catalog: default-catalog
           app_catalog_test: default-test-catalog
           chart: azuredisk-csi-driver-app
@@ -59,4 +63,4 @@ workflows:
             tags:
               only: /^v.*/
             branches:
-              only: /.*/ 
+              ignore: /.*/ 
