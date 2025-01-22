@@ -1,6 +1,0 @@
-generate-metadata: true
-chart-dir: ./helm/azuredisk-csi-driver-app
-destination: ./build
-catalog-base-url: https://giantswarm.github.io/default-catalog/
-replace-chart-version-with-git: true
-replace-app-version-with-git: true
