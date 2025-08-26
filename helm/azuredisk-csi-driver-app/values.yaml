@@ -9,7 +9,7 @@ image:
   baseRepo: "gsoci.azurecr.io/giantswarm/"
   azuredisk:
     repository: azuredisk-csi
-    tag: v1.30.2
+    tag: v1.30.12
     pullPolicy: IfNotPresent
   csiProvisioner:
     repository: csi-provisioner
