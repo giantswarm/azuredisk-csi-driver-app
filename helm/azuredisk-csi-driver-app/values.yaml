@@ -1,35 +1,31 @@
-# Default values for name: k8s-dns-node-cache-chart
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 name: azuredisk-csi
 serviceType: managed
 
 image:
-  baseRepo: "gsoci.azurecr.io/giantswarm/"
+  baseRepo: gsoci.azurecr.io/giantswarm/
   azuredisk:
     repository: azuredisk-csi
-    tag: v1.30.12
+    tag: v1.31.11
     pullPolicy: IfNotPresent
   csiProvisioner:
     repository: csi-provisioner
-    tag: v5.0.1
+    tag: v5.2.0
     pullPolicy: IfNotPresent
   csiAttacher:
     repository: csi-attacher
-    tag: v4.6.1
+    tag: v4.8.1
     pullPolicy: IfNotPresent
   csiResizer:
     repository: csi-resizer
-    tag: v1.11.1
+    tag: v1.13.2
     pullPolicy: IfNotPresent
   livenessProbe:
     repository: livenessprobe
-    tag: v2.8.0
+    tag: v2.15.0
     pullPolicy: IfNotPresent
   nodeDriverRegistrar:
     repository: csi-node-driver-registrar
-    tag: v2.6.2
+    tag: v2.13.0
     pullPolicy: IfNotPresent
 
 serviceAccount:
@@ -76,6 +72,9 @@ controller:
     - key: "node-role.kubernetes.io/control-plane"
       operator: "Exists"
       effect: "NoSchedule"
+    - key: "CriticalAddonsOnly"
+      operator: "Exists"
+      effect: "NoSchedule"
   hostNetwork: true  # this setting could be disabled if controller does not depend on MSI setting
   labels: {}
   annotations: {}
@@ -106,7 +105,7 @@ controller:
         memory: 20Mi
     csiSnapshotter:
       limits:
-        memory: 200Mi
+        memory: 400Mi
       requests:
         cpu: 10m
         memory: 20Mi
@@ -143,11 +142,11 @@ snapshot:
   image:
     csiSnapshotter:
       repository: csi-snapshotter
-      tag: v8.0.1
+      tag: v8.2.0
       pullPolicy: IfNotPresent
     csiSnapshotController:
       repository: snapshot-controller
-      tag: v8.0.1
+      tag: v8.2.0
       pullPolicy: IfNotPresent
   verticalPodAutoscaler:
     enabled: true
@@ -160,7 +159,7 @@ snapshot:
     podAnnotations: {}
     resources:
       limits:
-        memory: 300Mi
+        memory: 500Mi
       requests:
         cpu: 10m
         memory: 20Mi
@@ -233,7 +232,7 @@ linux:
         memory: 20Mi
     azuredisk:
       limits:
-        memory: 200Mi
+        memory: 1000Mi
       requests:
         cpu: 10m
         memory: 20Mi
