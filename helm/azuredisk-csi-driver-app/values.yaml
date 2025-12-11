@@ -5,27 +5,27 @@ image:
   baseRepo: gsoci.azurecr.io/giantswarm/
   azuredisk:
     repository: azuredisk-csi
-    tag: v1.32.9
+    tag: v1.33.7
     pullPolicy: IfNotPresent
   csiProvisioner:
     repository: csi-provisioner
-    tag: v5.3.0
+    tag: v6.0.0
     pullPolicy: IfNotPresent
   csiAttacher:
     repository: csi-attacher
-    tag: v4.9.0
+    tag: v4.10.0
     pullPolicy: IfNotPresent
   csiResizer:
     repository: csi-resizer
-    tag: v1.14.0
+    tag: v2.0.0
     pullPolicy: IfNotPresent
   livenessProbe:
     repository: livenessprobe
-    tag: v2.16.0
+    tag: v2.17.0
     pullPolicy: IfNotPresent
   nodeDriverRegistrar:
     repository: csi-node-driver-registrar
-    tag: v2.14.0
+    tag: v2.15.0
     pullPolicy: IfNotPresent
 
 serviceAccount:
@@ -143,11 +143,11 @@ snapshot:
   image:
     csiSnapshotter:
       repository: csi-snapshotter
-      tag: v8.2.1
+      tag: v8.4.0
       pullPolicy: IfNotPresent
     csiSnapshotController:
       repository: snapshot-controller
-      tag: v8.2.1
+      tag: v8.4.0
       pullPolicy: IfNotPresent
   verticalPodAutoscaler:
     enabled: true
