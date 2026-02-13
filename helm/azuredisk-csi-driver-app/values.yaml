@@ -288,7 +288,3 @@ securityContext:
   node:
     seccompProfile:
       type: RuntimeDefault
-
-global:
-  podSecurityStandards:
-    enforced: false
