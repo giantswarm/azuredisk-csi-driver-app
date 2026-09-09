@@ -71,7 +71,7 @@ spec:
         - name: csi-provisioner
           image: "{{ .Values.image.baseRepo }}{{ .Values.image.csiProvisioner.repository }}:{{ .Values.image.csiProvisioner.tag }}"
           args:
-            - "--feature-gates=Topology=true,HonorPVReclaimPolicy=true"
+            - "--feature-gates=Topology=true"
             - "--csi-address=$(ADDRESS)"
             - "--v=2"
             - "--timeout=30s"
