@@ -7,6 +7,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-09-10
+
 ### Changed
 
 - Migrate to App Build Suite (ABS).
@@ -213,7 +215,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 - Initial release with upstream version 1.13.0.
 
-[Unreleased]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v2.2.0...HEAD
+[2.2.0]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.32.9...v2.0.0
 [1.32.9]: https://github.com/giantswarm/azuredisk-csi-driver-app/compare/v1.32.9-gs1...v1.32.9
