@@ -1,7 +1,7 @@
 {{/* vim: set filetype=mustache: */}}
 
 {{- define "chart" -}}
-{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" | trimSuffix "." -}}
+{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimAll "-._" -}}
 {{- end -}}
 
 {{/* Expand the name of the chart.*/}}
