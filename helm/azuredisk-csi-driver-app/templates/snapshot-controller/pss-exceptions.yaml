@@ -1,4 +1,4 @@
-{{ if .Capabilities.APIVersions.Has "kyverno.io/v2beta1/PolicyException" -}}
+{{ if and (.Capabilities.APIVersions.Has "kyverno.io/v2beta1/PolicyException") .Values.kyvernoPolicyExceptions.enabled .Values.kyvernoPolicyExceptions.legacy.enabled -}}
 {{ if .Capabilities.APIVersions.Has "kyverno.io/v2/PolicyException" -}}
 apiVersion: kyverno.io/v2
 {{- else }}
@@ -8,6 +8,8 @@ kind: PolicyException
 metadata:
   name: {{ .Values.snapshot.snapshotController.name }}-exceptions
   namespace: {{ .Release.Namespace }}
+  labels:
+    policy.giantswarm.io/migrated-to-cel: "true"
 spec:
   exceptions:
   - policyName: require-run-as-nonroot 
